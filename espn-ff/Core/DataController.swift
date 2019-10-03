@@ -71,3 +71,13 @@ extension NSManagedObjectContext {
         }
     }
 }
+
+enum CoreDataError: Error, LocalizedError {
+    case entityAlreadySaved(String?)
+    
+    var errorDescription: String? {
+        switch self {
+        case .entityAlreadySaved(let message): return message ?? "Already saved."
+        }
+    }
+}

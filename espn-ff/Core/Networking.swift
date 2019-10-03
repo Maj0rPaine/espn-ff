@@ -8,31 +8,6 @@
 
 import Foundation
 
-enum NetworkResult<T, U> where U: Error  {
-    case success(T)
-    case failure(U)
-}
-
-enum NetworkError: Error {
-    case noInternet
-    case requestFailed
-    case jsonConversionFailure
-    case invalidData
-    case responseUnsuccessful
-    case jsonParsingFailure
-    
-    var localizedDescription: String {
-        switch self {
-        case .noInternet: return "No Internet Connection"
-        case .requestFailed: return "Request Failed"
-        case .invalidData: return "Invalid Data"
-        case .responseUnsuccessful: return "Response Unsuccessful"
-        case .jsonParsingFailure: return "JSON Parsing Failure"
-        case .jsonConversionFailure: return "JSON Conversion Failure"
-        }
-    }
-}
-
 class Networking {
     typealias JSONTaskCompletionHandler = (Decodable?, NetworkError?) -> Void
     
@@ -129,6 +104,30 @@ extension Networking {
         }
     }
     
+    func saveLeague(leagueId: String, completion: @escaping (League?, Error?) -> Void) {
+        Networking.instance.getLeague(leagueId: leagueId) { (league, error) in
+            guard let league = league else {
+                completion(nil, error)
+                return
+            }
+            
+            // Check if entity already exists
+            guard let objects = try? DataController.instance.viewContext.fetch(LeagueEntity.fetchRequest()) as? [LeagueEntity],
+                !objects.contains(where: { $0.id == leagueId }) else {
+                    completion(nil, CoreDataError.entityAlreadySaved("This league is already saved."))
+                return
+            }
+            
+            // Save entity
+            let newEntity = LeagueEntity(context: DataController.instance.viewContext)
+            newEntity.id = leagueId
+            newEntity.name = league.name
+            DataController.instance.viewContext.saveChanges()
+            
+            completion(league, nil)
+        }
+    }
+    
     func getTeam(leagueId: String, teamId: String, completion: @escaping (Team?, Error?) -> Void) {
         guard var urlComponents = URLComponents(string: "\(baseURL)\(leagueId)") else { return }
         urlComponents.queryItems = [
@@ -142,13 +141,43 @@ extension Networking {
         }) { (result) in
             switch result {
             case .success(let league):
-                let team = league.teams?.first(where: { $0.owners?.first == teamId })
+                guard let team = league.teams?.first(where: { $0.owners?.first == teamId }) else {
+                    completion(nil, NetworkError.teamNotAvailable)
+                    return
+                }
                 completion(team, nil)
                 break
             case .failure(let error):
                 completion(nil, error)
                 break
             }
+        }
+    }
+}
+
+enum NetworkResult<T, U> where U: Error  {
+    case success(T)
+    case failure(U)
+}
+
+enum NetworkError: Error, LocalizedError {
+    case noInternet
+    case requestFailed
+    case jsonConversionFailure
+    case invalidData
+    case responseUnsuccessful
+    case jsonParsingFailure
+    case teamNotAvailable /// FIXME: Move to models
+    
+    var errorDescription: String? {
+        switch self {
+        case .noInternet: return "No Internet Connection"
+        case .requestFailed: return "Request Failed"
+        case .invalidData: return "Invalid Data"
+        case .responseUnsuccessful: return "Response Unsuccessful"
+        case .jsonParsingFailure: return "JSON Parsing Failure"
+        case .jsonConversionFailure: return "JSON Conversion Failure"
+        case .teamNotAvailable: return "Team not available. Check login."
         }
     }
 }

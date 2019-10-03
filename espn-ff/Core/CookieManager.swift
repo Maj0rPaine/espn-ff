@@ -17,7 +17,7 @@ class CookieManager {
     
     var cookieStore = WKWebsiteDataStore.default().httpCookieStore
     
-    var foundCookies: (() -> Void)?
+    var foundCookies: ((Bool) -> Void)?
     
     let ESPN_COOKIE_NAME = "espn_s2"
     
@@ -31,7 +31,7 @@ class CookieManager {
         return defaults.string(forKey: SWID_COOKIE_NAME)
     }
     
-    init(_ foundCookies: (() -> Void)? = nil) {
+    init(_ foundCookies: ((Bool) -> Void)? = nil) {
         self.foundCookies = foundCookies
         checkCookies()
     }
@@ -45,9 +45,7 @@ class CookieManager {
     }
     
     func checkCookies() {
-        if espnCookie != nil && swidCookie != nil {
-            foundCookies?()
-        }
+        foundCookies?(espnCookie != nil && swidCookie != nil)
     }
     
     func fetchCookies() {
@@ -56,5 +54,10 @@ class CookieManager {
                 self.saveCookie(cookie)
             }
         }
+    }
+    
+    func clearCookies() {
+        defaults.removeObject(forKey: ESPN_COOKIE_NAME)
+        checkCookies()
     }
 }

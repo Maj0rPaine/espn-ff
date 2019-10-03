@@ -32,17 +32,16 @@ class LeagueViewController: UIViewController {
         
         addLeagueButton.isEnabled = false
         
-        cookieManager = CookieManager {
-            self.signInButton.title = "Logged In"
-            
-            self.addLeagueButton.isEnabled = true
+        cookieManager = CookieManager { foundCookies in
+            self.signInButton.title = foundCookies ? "Logged In" : "Log In"
+            self.addLeagueButton.isEnabled = foundCookies
         }
     }
     
     @IBAction func presentWebView(_ sender: Any) {
         webViewController = WebViewController()
         webViewController.presentationController?.delegate = self
-        present(webViewController, animated: true, completion: nil)
+        present(UINavigationController(rootViewController: webViewController), animated: true, completion: nil)
     }
     
     @IBAction func pushNewLeagueController() {
@@ -62,11 +61,17 @@ extension LeagueViewController: UITableViewDelegate {
             let leagueId = cell.leagueId,
             let teamId = cookieManager.swidCookie else { return }
                 
-        Networking.instance.getTeam(leagueId: leagueId, teamId: teamId) { (team, error) in
-            guard let team = team else { return }
+        Networking.instance.getTeam(leagueId: leagueId, teamId: teamId) { [weak self] (team, error) in
+            guard let team = team else {
+                if error != nil {
+                    self?.cookieManager.clearCookies()
+                    self?.present(UIAlertController.createErrorAlert(message: error?.localizedDescription), animated: true, completion: nil)
+                }
+                return
+            }
             let teamDetailsViewController = TeamDetailsViewController(team: team)
             teamDetailsViewController.title = cell.textLabel?.text
-            self.navigationController?.pushViewController(teamDetailsViewController, animated: true)
+            self?.navigationController?.pushViewController(teamDetailsViewController, animated: true)
         }
     }
 }

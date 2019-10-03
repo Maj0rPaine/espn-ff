@@ -36,29 +36,14 @@ class NewLeagueController: UITableViewController {
     @objc func saveNewLeague() {
         guard let id = leagueCell.leagueId else { return }
                 
-        Networking.instance.getLeague(leagueId: id) { (league, error) in
-            guard let league = league else {
-                if let error = error {
-                    self.present(UIAlertController.createAlert(title: "Oops", message: error.localizedDescription), animated: true, completion: nil)
-                }
+        Networking.instance.saveLeague(leagueId: id) { [weak self] (league, error) in
+            guard error == nil else {
+                self?.present(UIAlertController.createErrorAlert(message: error?.localizedDescription), animated: true, completion: nil)
                 return
             }
-            
-            guard let objects = try? DataController.instance.viewContext.fetch(LeagueEntity.fetchRequest()) as? [LeagueEntity],
-                !objects.contains(where: { $0.id == id }) else {
-                    DispatchQueue.main.async {
-                        self.present(UIAlertController.createAlert(title: "Oops", message: "This league is already saved."), animated: true, completion: nil)
-                    }
-                return
-            }
-            
-            let newEntity = LeagueEntity(context: DataController.instance.viewContext)
-            newEntity.id = id
-            newEntity.name = league.name
-            DataController.instance.viewContext.saveChanges()
             
             DispatchQueue.main.async {
-                self.navigationController?.popViewController(animated: true)
+                self?.navigationController?.popViewController(animated: true)
             }
         }
     }
