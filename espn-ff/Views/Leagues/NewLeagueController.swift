@@ -35,8 +35,8 @@ class NewLeagueController: UITableViewController {
     
     @objc func saveNewLeague() {
         guard let id = leagueCell.leagueId else { return }
-        
-        League.getLeague(leagueId: id) { (league, error) in
+                
+        Networking.instance.getLeague(leagueId: id) { (league, error) in
             guard let league = league else {
                 if let error = error {
                     self.present(UIAlertController.createAlert(title: "Oops", message: error.localizedDescription), animated: true, completion: nil)

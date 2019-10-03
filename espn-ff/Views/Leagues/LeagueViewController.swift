@@ -62,14 +62,11 @@ extension LeagueViewController: UITableViewDelegate {
             let leagueId = cell.leagueId,
             let teamId = cookieManager.swidCookie else { return }
                 
-        League.getTeam(leagueId: leagueId, teamId: teamId) { (team, error) in
+        Networking.instance.getTeam(leagueId: leagueId, teamId: teamId) { (team, error) in
             guard let team = team else { return }
-            
-            DispatchQueue.main.async {
-                let teamDetailsViewController = TeamDetailsViewController(team: team)
-                teamDetailsViewController.title = cell.textLabel?.text
-                self.navigationController?.pushViewController(teamDetailsViewController, animated: true)
-            }
+            let teamDetailsViewController = TeamDetailsViewController(team: team)
+            teamDetailsViewController.title = cell.textLabel?.text
+            self.navigationController?.pushViewController(teamDetailsViewController, animated: true)
         }
     }
 }

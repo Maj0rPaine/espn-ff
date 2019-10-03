@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F1302412345AA3000E27250 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F417A06234596A60073CE1F /* Networking.swift */; };
 		3F417A0023456FE00073CE1F /* NewLeagueController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4179FF23456FE00073CE1F /* NewLeagueController.swift */; };
 		3F417A0323457F3F0073CE1F /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F417A0223457F3F0073CE1F /* Extensions.swift */; };
 		3FBCB8B42343C0A6001F19B8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBCB8B32343C0A6001F19B8 /* AppDelegate.swift */; };
@@ -84,6 +85,7 @@
 /* Begin PBXFileReference section */
 		3F4179FF23456FE00073CE1F /* NewLeagueController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLeagueController.swift; sourceTree = "<group>"; };
 		3F417A0223457F3F0073CE1F /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		3F417A06234596A60073CE1F /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		3FBCB8B02343C0A6001F19B8 /* espn-ff.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "espn-ff.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FBCB8B32343C0A6001F19B8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3FBCB8B52343C0A6001F19B8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -205,6 +207,7 @@
 			children = (
 				3FBCB8D02344433C001F19B8 /* CookieManager.swift */,
 				3FBCB99C23454A6E001F19B8 /* DataController.swift */,
+				3F417A06234596A60073CE1F /* Networking.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -387,6 +390,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F1302412345AA3000E27250 /* Networking.swift in Sources */,
 				3FBCB9922345362D001F19B8 /* League.swift in Sources */,
 				3FBCB99D23454A6E001F19B8 /* DataController.swift in Sources */,
 				3FBCB8B82343C0A6001F19B8 /* LeagueViewController.swift in Sources */,
