@@ -1,5 +1,5 @@
 //
-//  NotificationController.swift
+//  InterfaceController.swift
 //  watch Extension
 //
 //  Created by Chris Paine on 10/3/19.
@@ -8,31 +8,24 @@
 
 import WatchKit
 import Foundation
-import UserNotifications
 
 
-class NotificationController: WKUserNotificationInterfaceController {
+class InterfaceController: WKInterfaceController {
 
-    override init() {
-        // Initialize variables here.
-        super.init()
+    override func awake(withContext context: Any?) {
+        super.awake(withContext: context)
         
         // Configure interface objects here.
     }
-
+    
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
     }
-
+    
     override func didDeactivate() {
         // This method is called when watch view controller is no longer visible
         super.didDeactivate()
     }
 
-    override func didReceive(_ notification: UNNotification) {
-        // This method is called when a notification needs to be presented.
-        // Implement it if you use a dynamic notification interface.
-        // Populate your dynamic notification interface as quickly as possible.
-    }
 }
