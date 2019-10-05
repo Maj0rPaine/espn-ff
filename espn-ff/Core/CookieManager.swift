@@ -7,56 +7,43 @@
 //
 
 import Foundation
-import WebKit
 
 class CookieManager {
-    var defaults = UserDefaults.standard
+    var containsAuthCookie: ((Bool) -> Void)?
     
-    var cookieStorage = HTTPCookieStorage.shared
-    
-    var cookieStore = WKWebsiteDataStore.default().httpCookieStore
-    
-    var foundCookies: ((Bool) -> Void)?
+    static let sharedCookieStorage = HTTPCookieStorage.sharedCookieStorage(forGroupContainerIdentifier: "group.com.chrispaine.espn-ff")
     
     let ESPN_COOKIE_NAME = "espn_s2"
     
     let SWID_COOKIE_NAME = "SWID"
     
-    var espnCookie: String? {
-        return defaults.string(forKey: ESPN_COOKIE_NAME)
+    var swid: String? {
+        guard let cookie = CookieManager.sharedCookieStorage.cookies?.first(where: { $0.name.contains(SWID_COOKIE_NAME) }) else { return nil }
+        return cookie.value
     }
     
-    var swidCookie: String? {
-        return defaults.string(forKey: SWID_COOKIE_NAME)
-    }
-    
-    init(_ foundCookies: ((Bool) -> Void)? = nil) {
-        self.foundCookies = foundCookies
+    init(_ containsAuthCookie: ((Bool) -> Void)? = nil) {
+        self.containsAuthCookie = containsAuthCookie
         checkCookies()
     }
     
     func saveCookie(_ cookie: HTTPCookie) {
         guard cookie.name == ESPN_COOKIE_NAME || cookie.name == SWID_COOKIE_NAME else { return }
-        cookieStorage.setCookie(cookie)
-        defaults.set(cookie.value, forKey: cookie.name)
+        CookieManager.sharedCookieStorage.setCookie(cookie)
         print("Set \(cookie.name) cookie")
         checkCookies()
     }
     
     func checkCookies() {
-        foundCookies?(espnCookie != nil && swidCookie != nil)
-    }
-    
-    func fetchCookies() {
-        cookieStore.getAllCookies { cookies in
-            for cookie in cookies {
-                self.saveCookie(cookie)
-            }
+        guard let cookies = CookieManager.sharedCookieStorage.cookies else {
+            containsAuthCookie?(false)
+            return
         }
+        containsAuthCookie?(cookies.contains { $0.name.contains(ESPN_COOKIE_NAME)})
     }
     
     func clearCookies() {
-        defaults.removeObject(forKey: ESPN_COOKIE_NAME)
+        CookieManager.sharedCookieStorage.cookies?.forEach(CookieManager.sharedCookieStorage.deleteCookie(_:))
         checkCookies()
     }
 }

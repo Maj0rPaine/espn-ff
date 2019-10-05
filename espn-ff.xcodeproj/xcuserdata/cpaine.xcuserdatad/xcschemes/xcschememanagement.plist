@@ -7,27 +7,32 @@
 		<key>espn-ff.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>3</integer>
 		</dict>
 		<key>watch (Complication).xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>3</integer>
+			<integer>2</integer>
 		</dict>
 		<key>watch (Notification).xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>2</integer>
+			<integer>1</integer>
 		</dict>
 		<key>watch.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>1</integer>
+			<integer>0</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>3F130243234669E700E27250</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>3F13026C23466AA200E27250</key>
 		<dict>
 			<key>primary</key>
 			<true/>

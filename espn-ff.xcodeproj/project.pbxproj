@@ -17,11 +17,12 @@
 		3F13028523466AA300E27250 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F13028423466AA300E27250 /* ComplicationController.swift */; };
 		3F13028723466AA300E27250 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F13028623466AA300E27250 /* Assets.xcassets */; };
 		3F13028C23466AA300E27250 /* watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 3F13026D23466AA200E27250 /* watch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		3F1302952347D39B00E27250 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F417A06234596A60073CE1F /* Networking.swift */; };
 		3F1302962347D3AD00E27250 /* League.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBCB8CB234442A8001F19B8 /* League.swift */; };
 		3F1302972347D3B100E27250 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBCB8CD234442C2001F19B8 /* Team.swift */; };
 		3F1302982347D3C800E27250 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBCB99C23454A6E001F19B8 /* DataController.swift */; };
 		3F1302992347D3E700E27250 /* espn-ff.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3FBCB99923454A2F001F19B8 /* espn-ff.xcdatamodeld */; };
+		3F276D7423483C0F0006F186 /* CookieManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBCB8D02344433C001F19B8 /* CookieManager.swift */; };
+		3F276D7523483C140006F186 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F417A06234596A60073CE1F /* Networking.swift */; };
 		3F417A0023456FE00073CE1F /* NewLeagueController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4179FF23456FE00073CE1F /* NewLeagueController.swift */; };
 		3F417A0323457F3F0073CE1F /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F417A0223457F3F0073CE1F /* Extensions.swift */; };
 		3FBCB8B42343C0A6001F19B8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBCB8B32343C0A6001F19B8 /* AppDelegate.swift */; };
@@ -96,6 +97,8 @@
 		3F13028623466AA300E27250 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3F13028823466AA300E27250 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F13028923466AA300E27250 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		3F13029A2347E35700E27250 /* espn-ff.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "espn-ff.entitlements"; sourceTree = "<group>"; };
+		3F13029B2347E82D00E27250 /* watch Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "watch Extension.entitlements"; sourceTree = "<group>"; };
 		3F4179FF23456FE00073CE1F /* NewLeagueController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLeagueController.swift; sourceTree = "<group>"; };
 		3F417A0223457F3F0073CE1F /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		3F417A06234596A60073CE1F /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
@@ -149,6 +152,7 @@
 		3F13027D23466AA300E27250 /* watch Extension */ = {
 			isa = PBXGroup;
 			children = (
+				3F13029B2347E82D00E27250 /* watch Extension.entitlements */,
 				3F13027E23466AA300E27250 /* InterfaceController.swift */,
 				3F13028023466AA300E27250 /* ExtensionDelegate.swift */,
 				3F13028223466AA300E27250 /* NotificationController.swift */,
@@ -191,11 +195,11 @@
 		3FBCB8B22343C0A6001F19B8 /* espn-ff */ = {
 			isa = PBXGroup;
 			children = (
+				3F13029A2347E35700E27250 /* espn-ff.entitlements */,
 				3FBCB8B32343C0A6001F19B8 /* AppDelegate.swift */,
 				3FBCB8B52343C0A6001F19B8 /* SceneDelegate.swift */,
 				3FBCB8BC2343C0A7001F19B8 /* Assets.xcassets */,
 				3FBCB8C12343C0A7001F19B8 /* Info.plist */,
-				3FBCB8CA23444294001F19B8 /* Models */,
 				3FBCB8C72344425A001F19B8 /* Views */,
 				3F417A0123457F210073CE1F /* UI */,
 				3FBCB8CF2344432C001F19B8 /* Core */,
@@ -218,6 +222,7 @@
 		3FBCB8CA23444294001F19B8 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				3FBCB99923454A2F001F19B8 /* espn-ff.xcdatamodeld */,
 				3FBCB8CB234442A8001F19B8 /* League.swift */,
 				3FBCB8CD234442C2001F19B8 /* Team.swift */,
 			);
@@ -228,9 +233,9 @@
 			isa = PBXGroup;
 			children = (
 				3FBCB8D02344433C001F19B8 /* CookieManager.swift */,
-				3FBCB99C23454A6E001F19B8 /* DataController.swift */,
-				3FBCB99923454A2F001F19B8 /* espn-ff.xcdatamodeld */,
 				3F417A06234596A60073CE1F /* Networking.swift */,
+				3FBCB99C23454A6E001F19B8 /* DataController.swift */,
+				3FBCB8CA23444294001F19B8 /* Models */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -379,7 +384,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				3F13028323466AA300E27250 /* NotificationController.swift in Sources */,
-				3F1302952347D39B00E27250 /* Networking.swift in Sources */,
+				3F276D7523483C140006F186 /* Networking.swift in Sources */,
+				3F276D7423483C0F0006F186 /* CookieManager.swift in Sources */,
 				3F1302972347D3B100E27250 /* Team.swift in Sources */,
 				3F13028523466AA300E27250 /* ComplicationController.swift in Sources */,
 				3F13028123466AA300E27250 /* ExtensionDelegate.swift in Sources */,
@@ -459,6 +465,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_ENTITLEMENTS = "watch Extension/watch Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2D9DB4E75W;
 				INFOPLIST_FILE = "watch Extension/Info.plist";
@@ -481,6 +488,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_ENTITLEMENTS = "watch Extension/watch Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2D9DB4E75W;
 				INFOPLIST_FILE = "watch Extension/Info.plist";
@@ -655,6 +663,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "espn-ff/espn-ff.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2D9DB4E75W;
 				INFOPLIST_FILE = "espn-ff/Info.plist";
@@ -673,6 +682,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "espn-ff/espn-ff.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2D9DB4E75W;
 				INFOPLIST_FILE = "espn-ff/Info.plist";

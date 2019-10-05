@@ -12,12 +12,18 @@ class Networking {
     typealias JSONTaskCompletionHandler = (Decodable?, NetworkError?) -> Void
     
     static let instance = Networking()
-    
+        
     let baseURL = "https://fantasy.espn.com/apis/v3/games/ffl/seasons/2019/segments/0/leagues/"
 
-    let session: URLSession = URLSession(configuration: .default)
+    var session: URLSession!
 
     var dataTask: URLSessionDataTask?
+    
+    init() {
+        let configuration = URLSessionConfiguration.default
+        configuration.httpCookieStorage = CookieManager.sharedCookieStorage
+        session = URLSession(configuration: configuration)
+    }
     
     func request<T: Decodable>(_ url: URL?, decode: @escaping (Decodable) -> T?, completion: @escaping (NetworkResult<T, NetworkError>) -> Void) {
         guard let url = url else { return }
@@ -68,8 +74,8 @@ class Networking {
                 return
             }
             
-            // TODO: Handle status codes
-            if response.statusCode == 200 {
+            switch response.statusCode {
+            case 200:
                 if let data = data {
                     do {
                         let genericModel = try JSONDecoder().decode(decodingType, from: data)
@@ -80,7 +86,9 @@ class Networking {
                 } else {
                     completion(nil, .invalidData)
                 }
-            } else {
+            case 401:
+                completion(nil, .authenticationFailed)
+            default:
                 completion(nil, .responseUnsuccessful)
             }
         }
@@ -165,6 +173,7 @@ enum NetworkError: Error, LocalizedError {
     case requestFailed
     case jsonConversionFailure
     case invalidData
+    case authenticationFailed
     case responseUnsuccessful
     case jsonParsingFailure
     case teamNotAvailable /// FIXME: Move to models
@@ -174,6 +183,7 @@ enum NetworkError: Error, LocalizedError {
         case .noInternet: return "No Internet Connection"
         case .requestFailed: return "Request Failed"
         case .invalidData: return "Invalid Data"
+        case .authenticationFailed: return "You need to log in."
         case .responseUnsuccessful: return "Response Unsuccessful"
         case .jsonParsingFailure: return "JSON Parsing Failure"
         case .jsonConversionFailure: return "JSON Conversion Failure"

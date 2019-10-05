@@ -10,8 +10,10 @@ import UIKit
 import WebKit
 
 class WebViewController: UIViewController {
-    var webView = WKWebView()
+    var webView: WKWebView!
     
+    var cookieManager: CookieManager!
+            
     lazy var activityIndicator: UIActivityIndicatorView = {
         let activityIndicatorView = UIActivityIndicatorView()
         activityIndicatorView.startAnimating()
@@ -20,7 +22,13 @@ class WebViewController: UIViewController {
         return activityIndicatorView
     }()
     
+    convenience init(cookieManager: CookieManager) {
+        self.init()
+        self.cookieManager = cookieManager
+    }
+    
     override func loadView() {
+        webView = WKWebView()
         webView.navigationDelegate = self
         webView.addSubview(activityIndicator)
         webView.addConstraints([
@@ -33,13 +41,23 @@ class WebViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismissController))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
         
         guard let url = URL(string:"https://www.espn.com/fantasy/") else {
             dismissController()
             return
         }
         webView.load(URLRequest(url: url))
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        webView.configuration.websiteDataStore.httpCookieStore.getAllCookies { (cookies) in
+            for cookie in cookies {
+                self.cookieManager.saveCookie(cookie)
+            }
+        }
     }
     
     func confirmSaveLeague(_ leagueId: String) {
@@ -52,16 +70,29 @@ class WebViewController: UIViewController {
     }
     
     func saveLeague(_ leagueId: String) {
-        Networking.instance.saveLeague(leagueId: leagueId) { [weak self] (league, error) in
-            guard error == nil else {
-                self?.present(UIAlertController.createErrorAlert(message: error?.localizedDescription), animated: true, completion: nil)
-                return
-            }
-            
-            DispatchQueue.main.async {
-                self?.present(UIAlertController.createAlert(title: "Success", message: "You saved a new league."), animated: true, completion: nil)
-            }
+        // Check if entity already exists
+        guard let objects = try? DataController.instance.viewContext.fetch(LeagueEntity.fetchRequest()) as? [LeagueEntity],
+            !objects.contains(where: { $0.id == leagueId }) else {
+                self.present(UIAlertController.createErrorAlert(message: CoreDataError.entityAlreadySaved("This league is already saved.").localizedDescription), animated: true, completion: nil)
+            return
         }
+        
+        // Save entity
+        let newEntity = LeagueEntity(context: DataController.instance.viewContext)
+        newEntity.id = leagueId
+        DataController.instance.viewContext.saveChanges()
+        present(UIAlertController.createAlert(title: "Success", message: "You saved a new league."), animated: true, completion: nil)
+        
+//        Networking.instance.saveLeague(leagueId: leagueId) { [weak self] (league, error) in
+//            guard error == nil else {
+//                self?.present(UIAlertController.createErrorAlert(message: error?.localizedDescription), animated: true, completion: nil)
+//                return
+//            }
+//
+//            DispatchQueue.main.async {
+//                self?.present(UIAlertController.createAlert(title: "Success", message: "You saved a new league."), animated: true, completion: nil)
+//            }
+//        }
     }
     
     @objc func dismissController() {
@@ -84,7 +115,7 @@ extension WebViewController: WKNavigationDelegate {
             confirmSaveLeague(leagueId)
         }
         
-        print(url)
+        //print(url)
         decisionHandler(.allow)
     }
 }
