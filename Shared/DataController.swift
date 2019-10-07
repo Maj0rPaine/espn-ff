@@ -79,11 +79,36 @@ extension NSManagedObjectContext {
     func saveLeague(_ league: League) -> (league: LeagueEntity?, error: Error?) {
         guard let objects = fetchLeagues(),
             let id = league.leagueId,
-            !objects.contains(where: { $0.id == "\(id)" }) else {
+            !objects.contains(where: { $0.id == Int32(id) }) else {
                 return (nil, CoreDataError.entityAlreadySaved("This league is already saved."))
         }
         
         return (LeagueEntity(league: league, context: self), nil)
+    }
+    
+    func createLeagues(leagues: [League]) -> [LeagueEntity] {
+        var newLeagues = [LeagueEntity]()
+        
+        for league in leagues {
+            if let newLeague = saveLeague(league).league {
+                newLeagues.append(newLeague)
+            }
+        }
+        
+        return newLeagues
+    }
+    
+    func deleteLeagues() {
+        do {
+            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = LeagueEntity.fetchRequest()
+            let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+            deleteRequest.resultType = .resultTypeObjectIDs
+            let result = try execute(deleteRequest) as? NSBatchDeleteResult
+            let changes: [AnyHashable: Any] = [NSDeletedObjectsKey: result?.result as? [NSManagedObjectID] ?? []]
+            NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [self])
+        } catch let error {
+            print("Batch Delete Error: \(error)")
+        }
     }
 }
 

@@ -40,9 +40,11 @@ class LeagueViewController: UIViewController {
             self.addLeagueButton.isEnabled = containsAuthCookie
         }
         
-        if self.connectivityHandler.validSession != nil {
-            self.sendCookies()
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(sendMessage), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     @IBAction func presentWebView(_ sender: Any) {
@@ -53,8 +55,9 @@ class LeagueViewController: UIViewController {
         navigationController?.pushViewController(NewLeagueController(style: .grouped), animated: true)
     }
     
-    func sendCookies() {
-        guard let cookies = cookieManager.savedCookies(),
+    @objc func sendMessage() {
+        guard connectivityHandler.validSession != nil,
+            let cookies = cookieManager.savedCookies(),
             let entities = leagueTableView.fetchedResultsController.fetchedObjects,
             let configuration = try? JSONEncoder().encode(Configuration(cookies: cookies, leagues: entities.map { League(entity: $0) })),
             let stringData = String(data: configuration, encoding: String.Encoding.utf8) else { return }

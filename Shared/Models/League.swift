@@ -11,11 +11,13 @@ import CoreData
 
 struct League: Codable {
     var leagueId: Int?
+    var scoringPeriodId: Int?
     var teams: [Team]?
     var name: String?
     
     private enum CodingKeys: String, CodingKey {
         case id
+        case scoringPeriodId
         case teams
         case settings
     }
@@ -31,6 +33,10 @@ struct League: Codable {
             self.leagueId = id
         }
         
+        if let scoringPeriodId = try? container.decode(Int.self, forKey: .scoringPeriodId) {
+            self.scoringPeriodId = scoringPeriodId
+        }
+        
         if let teams = try? container.decode(Array<Team>.self, forKey: .teams) {
             self.teams = teams
         }
@@ -44,6 +50,7 @@ struct League: Codable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(leagueId, forKey: .id)
+        try container.encode(scoringPeriodId, forKey: .scoringPeriodId)
         try container.encode(teams, forKey: .teams)
         var settings = container.nestedContainer(keyedBy: SettingsCodingKeys.self, forKey: .settings)
         try settings.encode(name, forKey: .name)
@@ -52,7 +59,9 @@ struct League: Codable {
 
 extension League {
     init(entity: LeagueEntity) {
-        self.leagueId = Int(entity.id ?? "")
+        self.leagueId = Int(entity.id)
+        self.scoringPeriodId = Int(entity.scoringPeriodId)
+        self.teams = entity.teams?.allObjects as? [Team]
         self.name = entity.name
     }
 }

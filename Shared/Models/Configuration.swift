@@ -12,3 +12,13 @@ struct Configuration: Codable {
     var cookies: [Cookie]
     var leagues: [League]
 }
+
+extension Configuration {
+    func saveCookies(cookieManager: CookieManager) {
+        for cookie in self.cookies {
+            if let httpCookie = cookie.createHTTPCookie() {
+                cookieManager.saveCookie(httpCookie)
+            }
+        }
+    }
+}

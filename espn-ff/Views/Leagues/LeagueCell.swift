@@ -30,7 +30,7 @@ class LeagueCell: UITableViewCell {
     
     convenience init(entity: LeagueEntity) {
         self.init(style: .default, reuseIdentifier: nil)
-        self.leagueId = entity.id
+        self.leagueId = "\(entity.id)"
         textLabel?.text = entity.name
         accessoryType = .disclosureIndicator
     }

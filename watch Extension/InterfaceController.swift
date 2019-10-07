@@ -75,21 +75,10 @@ extension InterfaceController: WatchSessionManagerWatchOSDelegate {
             let data = jsonString.data(using: .utf8),
             let configuration = try? JSONDecoder().decode(Configuration.self, from: data) else { return }
         print(configuration)
-                
-        for cookie in configuration.cookies {
-            if let httpCookie = cookie.createHTTPCookie() {
-                cookieManager.saveCookie(httpCookie)
-            }
-        }
+        configuration.saveCookies(cookieManager: cookieManager)
         
-        var newLeagues = [LeagueEntity]()
+        DataController.shared.viewContext.deleteLeagues()
         
-        for league in configuration.leagues {
-            if let newLeague = DataController.shared.viewContext.saveLeague(league).league {
-                newLeagues.append(newLeague)
-            }
-        }
-        
-        self.leagues = newLeagues
+        self.leagues = DataController.shared.viewContext.createLeagues(leagues: configuration.leagues)
     }
 }
