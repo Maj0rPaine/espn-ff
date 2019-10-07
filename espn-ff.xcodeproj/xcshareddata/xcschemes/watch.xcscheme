@@ -29,7 +29,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "3FBCB8AF2343C0A6001F19B8"
-               BuildableName = "espn-ff.app"
+               BuildableName = "Shared App Groups.app"
                BlueprintName = "espn-ff"
                ReferencedContainer = "container:espn-ff.xcodeproj">
             </BuildableReference>

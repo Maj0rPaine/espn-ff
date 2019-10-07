@@ -20,7 +20,7 @@ class LeagueTableView: UITableView, UITableViewDataSource {
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: false)]
         
         fetchedResultsController = NSFetchedResultsController<LeagueEntity>(fetchRequest: fetchRequest,
-                                                                            managedObjectContext: DataController.instance.viewContext,
+                                                                            managedObjectContext: DataController.shared.viewContext,
                                                                             sectionNameKeyPath: nil,
                                                                             cacheName: "League")
         fetchedResultsController.delegate = self
@@ -37,7 +37,7 @@ class LeagueTableView: UITableView, UITableViewDataSource {
     }
     
     deinit {
-        fetchedResultsController = nil
+        fetchedResultsController = nil        
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -62,8 +62,8 @@ class LeagueTableView: UITableView, UITableViewDataSource {
     
     func deleteEntity(at indexPath: IndexPath) {
         let entityToDelete = fetchedResultsController.object(at: indexPath)
-        DataController.instance.viewContext.delete(entityToDelete)
-        DataController.instance.viewContext.saveChanges()
+        DataController.shared.viewContext.delete(entityToDelete)
+        DataController.shared.viewContext.saveChanges()
     }
 }
 

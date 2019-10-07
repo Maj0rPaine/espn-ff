@@ -7,11 +7,14 @@
 //
 
 import UIKit
+import WatchConnectivity
 
 class LeagueViewController: UIViewController {
     @IBOutlet weak var signInButton: UIBarButtonItem!
     
     @IBOutlet weak var addLeagueButton: UIBarButtonItem!
+    
+    var connectivityHandler = WatchSessionManager.shared
     
     var cookieManager: CookieManager!
     
@@ -31,10 +34,14 @@ class LeagueViewController: UIViewController {
         navigationItem.title = "Leagues"
         
         addLeagueButton.isEnabled = false
-        
+                
         cookieManager = CookieManager { containsAuthCookie in
             self.signInButton.title = containsAuthCookie ? "Logged In" : "Log In"
             self.addLeagueButton.isEnabled = containsAuthCookie
+        }
+        
+        if self.connectivityHandler.validSession != nil {
+            self.sendCookies()
         }
     }
     
@@ -45,6 +52,20 @@ class LeagueViewController: UIViewController {
     @IBAction func pushNewLeagueController() {
         navigationController?.pushViewController(NewLeagueController(style: .grouped), animated: true)
     }
+    
+    func sendCookies() {
+        guard let cookies = cookieManager.savedCookies(),
+            let entities = leagueTableView.fetchedResultsController.fetchedObjects,
+            let configuration = try? JSONEncoder().encode(Configuration(cookies: cookies, leagues: entities.map { League(entity: $0) })),
+            let stringData = String(data: configuration, encoding: String.Encoding.utf8) else { return }
+        
+        let message = ["configuration" : stringData]
+        connectivityHandler.sendMessage(message: message as [String : AnyObject], replyHandler: { (response) in
+            print("Reply: \(response)")
+        }) { (error) in
+            print("Error sending message: \(error)")
+        }
+    }
 }
 
 extension LeagueViewController: UITableViewDelegate {
@@ -53,7 +74,7 @@ extension LeagueViewController: UITableViewDelegate {
             let leagueId = cell.leagueId,
             let teamId = cookieManager.swid else { return }
                 
-        Networking.instance.getTeam(leagueId: leagueId, teamId: teamId) { [weak self] (team, error) in
+        Networking.shared.getTeam(leagueId: leagueId, teamId: teamId) { [weak self] (team, error) in
             guard let team = team else {
                 if error != nil {
                     self?.cookieManager.clearCookies()

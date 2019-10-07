@@ -23,8 +23,15 @@
 		3F1302992347D3E700E27250 /* espn-ff.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3FBCB99923454A2F001F19B8 /* espn-ff.xcdatamodeld */; };
 		3F276D7423483C0F0006F186 /* CookieManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBCB8D02344433C001F19B8 /* CookieManager.swift */; };
 		3F276D7523483C140006F186 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F417A06234596A60073CE1F /* Networking.swift */; };
+		3F276D77234840DE0006F186 /* WatchSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F276D76234840DE0006F186 /* WatchSessionManager.swift */; };
+		3F276D792348C1980006F186 /* WatchSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F276D76234840DE0006F186 /* WatchSessionManager.swift */; };
 		3F417A0023456FE00073CE1F /* NewLeagueController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4179FF23456FE00073CE1F /* NewLeagueController.swift */; };
 		3F417A0323457F3F0073CE1F /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F417A0223457F3F0073CE1F /* Extensions.swift */; };
+		3F527ECA23492F0F004AF6CB /* LeagueRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F527EC923492F0F004AF6CB /* LeagueRowController.swift */; };
+		3F83475C234AD9DF0026330A /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F83475B234AD9DF0026330A /* Configuration.swift */; };
+		3F83475D234AD9E30026330A /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F83475B234AD9DF0026330A /* Configuration.swift */; };
+		3F83475F234AED630026330A /* LeagueEntity+NSManageObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F83475E234AED630026330A /* LeagueEntity+NSManageObject.swift */; };
+		3F834760234AED630026330A /* LeagueEntity+NSManageObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F83475E234AED630026330A /* LeagueEntity+NSManageObject.swift */; };
 		3FBCB8B42343C0A6001F19B8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBCB8B32343C0A6001F19B8 /* AppDelegate.swift */; };
 		3FBCB8B62343C0A6001F19B8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBCB8B52343C0A6001F19B8 /* SceneDelegate.swift */; };
 		3FBCB8B82343C0A6001F19B8 /* LeagueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBCB8B72343C0A6001F19B8 /* LeagueViewController.swift */; };
@@ -97,11 +104,13 @@
 		3F13028623466AA300E27250 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3F13028823466AA300E27250 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F13028923466AA300E27250 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
-		3F13029A2347E35700E27250 /* espn-ff.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "espn-ff.entitlements"; sourceTree = "<group>"; };
-		3F13029B2347E82D00E27250 /* watch Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "watch Extension.entitlements"; sourceTree = "<group>"; };
+		3F276D76234840DE0006F186 /* WatchSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSessionManager.swift; sourceTree = "<group>"; };
 		3F4179FF23456FE00073CE1F /* NewLeagueController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLeagueController.swift; sourceTree = "<group>"; };
 		3F417A0223457F3F0073CE1F /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		3F417A06234596A60073CE1F /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
+		3F527EC923492F0F004AF6CB /* LeagueRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeagueRowController.swift; sourceTree = "<group>"; };
+		3F83475B234AD9DF0026330A /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
+		3F83475E234AED630026330A /* LeagueEntity+NSManageObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LeagueEntity+NSManageObject.swift"; sourceTree = "<group>"; };
 		3FBCB8B02343C0A6001F19B8 /* espn-ff.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "espn-ff.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FBCB8B32343C0A6001F19B8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3FBCB8B52343C0A6001F19B8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -152,8 +161,8 @@
 		3F13027D23466AA300E27250 /* watch Extension */ = {
 			isa = PBXGroup;
 			children = (
-				3F13029B2347E82D00E27250 /* watch Extension.entitlements */,
 				3F13027E23466AA300E27250 /* InterfaceController.swift */,
+				3F527EC923492F0F004AF6CB /* LeagueRowController.swift */,
 				3F13028023466AA300E27250 /* ExtensionDelegate.swift */,
 				3F13028223466AA300E27250 /* NotificationController.swift */,
 				3F13028423466AA300E27250 /* ComplicationController.swift */,
@@ -162,6 +171,18 @@
 				3F13028923466AA300E27250 /* PushNotificationPayload.apns */,
 			);
 			path = "watch Extension";
+			sourceTree = "<group>";
+		};
+		3F276D782348C0F40006F186 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				3F276D76234840DE0006F186 /* WatchSessionManager.swift */,
+				3FBCB8D02344433C001F19B8 /* CookieManager.swift */,
+				3F417A06234596A60073CE1F /* Networking.swift */,
+				3FBCB99C23454A6E001F19B8 /* DataController.swift */,
+				3FBCB8CA23444294001F19B8 /* Models */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 		3F417A0123457F210073CE1F /* UI */ = {
@@ -175,6 +196,7 @@
 		3FBCB8A72343C0A6001F19B8 = {
 			isa = PBXGroup;
 			children = (
+				3F276D782348C0F40006F186 /* Shared */,
 				3FBCB8B22343C0A6001F19B8 /* espn-ff */,
 				3F13026E23466AA200E27250 /* watch */,
 				3F13027D23466AA300E27250 /* watch Extension */,
@@ -195,14 +217,12 @@
 		3FBCB8B22343C0A6001F19B8 /* espn-ff */ = {
 			isa = PBXGroup;
 			children = (
-				3F13029A2347E35700E27250 /* espn-ff.entitlements */,
 				3FBCB8B32343C0A6001F19B8 /* AppDelegate.swift */,
 				3FBCB8B52343C0A6001F19B8 /* SceneDelegate.swift */,
 				3FBCB8BC2343C0A7001F19B8 /* Assets.xcassets */,
 				3FBCB8C12343C0A7001F19B8 /* Info.plist */,
 				3FBCB8C72344425A001F19B8 /* Views */,
 				3F417A0123457F210073CE1F /* UI */,
-				3FBCB8CF2344432C001F19B8 /* Core */,
 			);
 			path = "espn-ff";
 			sourceTree = "<group>";
@@ -223,21 +243,12 @@
 			isa = PBXGroup;
 			children = (
 				3FBCB99923454A2F001F19B8 /* espn-ff.xcdatamodeld */,
+				3F83475E234AED630026330A /* LeagueEntity+NSManageObject.swift */,
 				3FBCB8CB234442A8001F19B8 /* League.swift */,
 				3FBCB8CD234442C2001F19B8 /* Team.swift */,
+				3F83475B234AD9DF0026330A /* Configuration.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		3FBCB8CF2344432C001F19B8 /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				3FBCB8D02344433C001F19B8 /* CookieManager.swift */,
-				3F417A06234596A60073CE1F /* Networking.swift */,
-				3FBCB99C23454A6E001F19B8 /* DataController.swift */,
-				3FBCB8CA23444294001F19B8 /* Models */,
-			);
-			path = Core;
 			sourceTree = "<group>";
 		};
 		3FBCB8D62344E597001F19B8 /* Leagues */ = {
@@ -385,12 +396,16 @@
 			files = (
 				3F13028323466AA300E27250 /* NotificationController.swift in Sources */,
 				3F276D7523483C140006F186 /* Networking.swift in Sources */,
+				3F834760234AED630026330A /* LeagueEntity+NSManageObject.swift in Sources */,
 				3F276D7423483C0F0006F186 /* CookieManager.swift in Sources */,
 				3F1302972347D3B100E27250 /* Team.swift in Sources */,
 				3F13028523466AA300E27250 /* ComplicationController.swift in Sources */,
 				3F13028123466AA300E27250 /* ExtensionDelegate.swift in Sources */,
 				3F1302982347D3C800E27250 /* DataController.swift in Sources */,
+				3F83475D234AD9E30026330A /* Configuration.swift in Sources */,
+				3F527ECA23492F0F004AF6CB /* LeagueRowController.swift in Sources */,
 				3F1302962347D3AD00E27250 /* League.swift in Sources */,
+				3F276D792348C1980006F186 /* WatchSessionManager.swift in Sources */,
 				3F1302992347D3E700E27250 /* espn-ff.xcdatamodeld in Sources */,
 				3F13027F23466AA300E27250 /* InterfaceController.swift in Sources */,
 			);
@@ -404,16 +419,19 @@
 				3FBCB9922345362D001F19B8 /* League.swift in Sources */,
 				3FBCB99D23454A6E001F19B8 /* DataController.swift in Sources */,
 				3FBCB8B82343C0A6001F19B8 /* LeagueViewController.swift in Sources */,
+				3F83475F234AED630026330A /* LeagueEntity+NSManageObject.swift in Sources */,
 				3FBCB8D12344433C001F19B8 /* CookieManager.swift in Sources */,
 				3FBCB99B23454A2F001F19B8 /* espn-ff.xcdatamodeld in Sources */,
 				3FBCB8C92344426C001F19B8 /* LeagueTableView.swift in Sources */,
 				3FBCB99623453CC9001F19B8 /* LeagueCell.swift in Sources */,
 				3FBCB99323453630001F19B8 /* Team.swift in Sources */,
 				3FBCB8B42343C0A6001F19B8 /* AppDelegate.swift in Sources */,
+				3F83475C234AD9DF0026330A /* Configuration.swift in Sources */,
 				3FBCB99823454062001F19B8 /* TeamDetailsViewController.swift in Sources */,
 				3F417A0023456FE00073CE1F /* NewLeagueController.swift in Sources */,
 				3FBCB8B62343C0A6001F19B8 /* SceneDelegate.swift in Sources */,
 				3FBCB8D32344437F001F19B8 /* WebViewController.swift in Sources */,
+				3F276D77234840DE0006F186 /* WatchSessionManager.swift in Sources */,
 				3F417A0323457F3F0073CE1F /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -465,7 +483,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
-				CODE_SIGN_ENTITLEMENTS = "watch Extension/watch Extension.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2D9DB4E75W;
 				INFOPLIST_FILE = "watch Extension/Info.plist";
@@ -476,6 +495,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.chrispaine.espn-ff.watchkitapp.watchkitextension";
 				PRODUCT_NAME = "${TARGET_NAME}";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -488,7 +508,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
-				CODE_SIGN_ENTITLEMENTS = "watch Extension/watch Extension.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2D9DB4E75W;
 				INFOPLIST_FILE = "watch Extension/Info.plist";
@@ -499,6 +520,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.chrispaine.espn-ff.watchkitapp.watchkitextension";
 				PRODUCT_NAME = "${TARGET_NAME}";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -512,12 +534,15 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2D9DB4E75W;
 				IBSC_MODULE = watch_Extension;
 				INFOPLIST_FILE = watch/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.chrispaine.espn-ff.watchkitapp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -531,12 +556,15 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2D9DB4E75W;
 				IBSC_MODULE = watch_Extension;
 				INFOPLIST_FILE = watch/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.chrispaine.espn-ff.watchkitapp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -663,16 +691,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "espn-ff/espn-ff.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2D9DB4E75W;
 				INFOPLIST_FILE = "espn-ff/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.chrispaine.espn-ff";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "espn-ff";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -682,16 +713,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "espn-ff/espn-ff.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2D9DB4E75W;
 				INFOPLIST_FILE = "espn-ff/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.chrispaine.espn-ff";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "espn-ff";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

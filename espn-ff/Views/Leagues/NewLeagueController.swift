@@ -36,7 +36,7 @@ class NewLeagueController: UITableViewController {
     @objc func saveNewLeague() {
         guard let id = leagueCell.leagueId else { return }
                 
-        Networking.instance.saveLeague(leagueId: id) { [weak self] (league, error) in
+        Networking.shared.saveLeague(leagueId: id) { [weak self] (league, error) in
             guard error == nil else {
                 self?.present(UIAlertController.createErrorAlert(message: error?.localizedDescription), animated: true, completion: nil)
                 return

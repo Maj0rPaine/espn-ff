@@ -70,29 +70,16 @@ class WebViewController: UIViewController {
     }
     
     func saveLeague(_ leagueId: String) {
-        // Check if entity already exists
-        guard let objects = try? DataController.instance.viewContext.fetch(LeagueEntity.fetchRequest()) as? [LeagueEntity],
-            !objects.contains(where: { $0.id == leagueId }) else {
-                self.present(UIAlertController.createErrorAlert(message: CoreDataError.entityAlreadySaved("This league is already saved.").localizedDescription), animated: true, completion: nil)
-            return
+        Networking.shared.saveLeague(leagueId: leagueId) { [weak self] (league, error) in
+            guard error == nil else {
+                self?.present(UIAlertController.createErrorAlert(message: error?.localizedDescription), animated: true, completion: nil)
+                return
+            }
+
+            DispatchQueue.main.async {
+                self?.present(UIAlertController.createAlert(title: "Success", message: "You saved a new league."), animated: true, completion: nil)
+            }
         }
-        
-        // Save entity
-        let newEntity = LeagueEntity(context: DataController.instance.viewContext)
-        newEntity.id = leagueId
-        DataController.instance.viewContext.saveChanges()
-        present(UIAlertController.createAlert(title: "Success", message: "You saved a new league."), animated: true, completion: nil)
-        
-//        Networking.instance.saveLeague(leagueId: leagueId) { [weak self] (league, error) in
-//            guard error == nil else {
-//                self?.present(UIAlertController.createErrorAlert(message: error?.localizedDescription), animated: true, completion: nil)
-//                return
-//            }
-//
-//            DispatchQueue.main.async {
-//                self?.present(UIAlertController.createAlert(title: "Success", message: "You saved a new league."), animated: true, completion: nil)
-//            }
-//        }
     }
     
     @objc func dismissController() {

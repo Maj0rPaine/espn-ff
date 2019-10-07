@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 class DataController {
-    static let instance = DataController(modelName: "espn-ff")
+    static let shared = DataController(modelName: "espn-ff")
     
     let persisentContainer: NSPersistentContainer
     
@@ -69,6 +69,21 @@ extension NSManagedObjectContext {
             print(error.localizedDescription)
             return 0
         }
+    }
+    
+    func fetchLeagues() -> [LeagueEntity]? {
+        guard let objects = try? fetch(LeagueEntity.fetchRequest()) as? [LeagueEntity] else { return nil }
+        return objects
+    }
+    
+    func saveLeague(_ league: League) -> (league: LeagueEntity?, error: Error?) {
+        guard let objects = fetchLeagues(),
+            let id = league.leagueId,
+            !objects.contains(where: { $0.id == "\(id)" }) else {
+                return (nil, CoreDataError.entityAlreadySaved("This league is already saved."))
+        }
+        
+        return (LeagueEntity(league: league, context: self), nil)
     }
 }
 

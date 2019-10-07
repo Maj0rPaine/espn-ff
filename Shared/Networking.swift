@@ -11,7 +11,7 @@ import Foundation
 class Networking {
     typealias JSONTaskCompletionHandler = (Decodable?, NetworkError?) -> Void
     
-    static let instance = Networking()
+    static let shared = Networking()
         
     let baseURL = "https://fantasy.espn.com/apis/v3/games/ffl/seasons/2019/segments/0/leagues/"
 
@@ -20,9 +20,7 @@ class Networking {
     var dataTask: URLSessionDataTask?
     
     init() {
-        let configuration = URLSessionConfiguration.default
-        configuration.httpCookieStorage = CookieManager.sharedCookieStorage
-        session = URLSession(configuration: configuration)
+        session = URLSession(configuration: .default)
     }
     
     func request<T: Decodable>(_ url: URL?, decode: @escaping (Decodable) -> T?, completion: @escaping (NetworkResult<T, NetworkError>) -> Void) {
@@ -112,27 +110,15 @@ extension Networking {
         }
     }
     
-    func saveLeague(leagueId: String, completion: @escaping (League?, Error?) -> Void) {
-        Networking.instance.getLeague(leagueId: leagueId) { (league, error) in
+    func saveLeague(leagueId: String, completion: @escaping (LeagueEntity?, Error?) -> Void) {
+        Networking.shared.getLeague(leagueId: leagueId) { (league, error) in
             guard let league = league else {
                 completion(nil, error)
                 return
             }
             
-            // Check if entity already exists
-            guard let objects = try? DataController.instance.viewContext.fetch(LeagueEntity.fetchRequest()) as? [LeagueEntity],
-                !objects.contains(where: { $0.id == leagueId }) else {
-                    completion(nil, CoreDataError.entityAlreadySaved("This league is already saved."))
-                return
-            }
-            
-            // Save entity
-            let newEntity = LeagueEntity(context: DataController.instance.viewContext)
-            newEntity.id = leagueId
-            newEntity.name = league.name
-            DataController.instance.viewContext.saveChanges()
-            
-            completion(league, nil)
+            let result = DataController.shared.viewContext.saveLeague(league)
+            completion(result.league, result.error)
         }
     }
     
