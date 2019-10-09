@@ -17,12 +17,16 @@ typealias ApplicationContextReceived = (session: WCSession, applicationContext: 
 
 protocol WatchSessionManagerWatchOSDelegate: AnyObject {
     func messageReceived(tuple: MessageReceived)
-    //func applicationContextReceived(tuple: ApplicationContextReceived)
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?)
 }
 
 protocol WatchSessionManageriOSDelegate: AnyObject {
     func messageReceived(tuple: MessageReceived)
-    //func applicationContextReceived(tuple: ApplicationContextReceived)
+}
+
+enum RequestType: String {
+    case configuration /// Watch needs to configure leagues
+    case setupConfiguration ///  Send configuration for league setup
 }
 
 class WatchSessionManager: NSObject {
@@ -67,6 +71,9 @@ extension WatchSessionManager: WCSessionDelegate {
      */
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         print("activationDidCompleteWith activationState:\(activationState) error:\(String(describing: error))")
+        #if os(watchOS)
+        watchOSDelegate?.session(session, activationDidCompleteWith: activationState, error: error)
+        #endif
     }
     
     #if os(iOS)
@@ -138,32 +145,3 @@ extension WatchSessionManager {
         #endif
     }
 }
-
-// - MARK: Application Context
-// use when your app needs only the latest information
-// if the data was not sent, it will be replaced
-//extension WatchSessionManager {
-//
-//    // - MARK: Sender
-//
-//    func updateApplicationContext(applicationContext: [String : Any]) throws {
-//        if let session = validSession {
-//            do {
-//                try session.updateApplicationContext(applicationContext)
-//            } catch let error {
-//                throw error
-//            }
-//        }
-//    }
-//
-//    // - MARK: Receiver
-//
-//    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
-//        #if os(iOS)
-//        iOSDelegate?.applicationContextReceived(tuple: (session, applicationContext))
-//        #elseif os(watchOS)
-//        watchOSDelegate?.applicationContextReceived(tuple: (session, applicationContext))
-//        #endif
-//    }
-//
-//}

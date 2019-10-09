@@ -21,7 +21,7 @@ class LeagueViewController: UIViewController {
     var leagueTableView: LeagueTableView!
     
     override func loadView() {
-        leagueTableView = LeagueTableView(frame: .zero, style: .grouped)
+        leagueTableView = LeagueTableView(frame: .zero, style: .insetGrouped)
         leagueTableView.delegate = self
         view = leagueTableView
     }
@@ -30,6 +30,9 @@ class LeagueViewController: UIViewController {
         super.viewDidLoad()
         
         navigationItem.title = "Leagues"
+        
+        connectivityHandler.iOSDelegate = self
+        connectivityHandler.startSession()
                 
         cookieManager.containsAuthCookie = { containsAuthCookie in
             self.signInButton.title = containsAuthCookie ? "Logged In" : "Log In"
@@ -37,7 +40,7 @@ class LeagueViewController: UIViewController {
         
         cookieManager.checkCookies()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(sendMessage), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(sendConfiguration), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
     }
     
     deinit {
@@ -48,16 +51,17 @@ class LeagueViewController: UIViewController {
         present(UINavigationController(rootViewController: WebViewController(cookieManager: cookieManager)), animated: true, completion: nil)
     }
     
-    @objc func sendMessage() {
+    @objc func sendConfiguration() {
         guard connectivityHandler.validSession != nil,
             let cookies = cookieManager.savedCookies(),
             let entities = leagueTableView.fetchedResultsController.fetchedObjects,
             let stringData = Configuration(cookies: cookies, leagueIds: entities.map { "\($0.id)" }).encoded() else { return }
-        
-        let message = ["configuration" : stringData]
-        connectivityHandler.sendMessage(message: message as [String : AnyObject], replyHandler: { (response) in
-            print("Reply: \(response)")
-        }) { (error) in
+        print("Phone sending configuration")
+        let message = [
+            "request" : RequestType.setupConfiguration.rawValue as AnyObject,
+            "configuration" : stringData as AnyObject
+        ]
+        connectivityHandler.sendMessage(message: message) { (error) in
             print("Error sending message: \(error)")
         }
     }
@@ -81,5 +85,18 @@ extension LeagueViewController: UITableViewDelegate {
 //            teamDetailsViewController.title = cell.textLabel?.text
 //            self?.navigationController?.pushViewController(teamDetailsViewController, animated: true)
 //        }
+    }
+}
+
+extension LeagueViewController: WatchSessionManageriOSDelegate {
+    func messageReceived(tuple: MessageReceived) {
+        switch tuple.message["request"] as! RequestType.RawValue {
+        case RequestType.configuration.rawValue:
+            print("Phone received configuration request")
+            sendConfiguration()
+            break
+        default:
+            break
+        }
     }
 }

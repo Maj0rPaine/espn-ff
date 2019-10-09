@@ -9,8 +9,9 @@
 import UIKit
 
 extension UIImage {
-    static func load(from url: String) -> UIImage? {
-        guard let url = URL(string: url),
+    static func load(from url: String?) -> UIImage? {
+        guard let urlString = url,
+            let url = URL(string: urlString),
             let imageData = try? Data(contentsOf: url),
             let image = UIImage(data: imageData) else { return nil }
         return image

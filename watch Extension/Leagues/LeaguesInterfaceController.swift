@@ -64,6 +64,18 @@ class LeaguesInterfaceController: WKInterfaceController {
         pushController(withName: "MatchupController", context: selectedLeague)
     }
     
+    @objc func fetchLeagues() {
+        self.leagues = dataController.viewContext.fetchLeagues()
+    }
+    
+    func requestConfiguration() {
+        print("Watch requesting configuration")
+        let data = ["request" : RequestType.configuration.rawValue as AnyObject]
+        connectivityHandler.sendMessage(message: data) { (error) in
+            print("Error sending message: \(error)")
+        }
+    }
+    
     func renderRows(data: [LeagueEntity]) {
         self.table.setNumberOfRows(data.count, withRowType: "LeagueRow")
         
@@ -72,22 +84,32 @@ class LeaguesInterfaceController: WKInterfaceController {
             controller.leagueLabel.setText(data[index].name)
         }
     }
-    
-    @objc func fetchLeagues() {
-        self.leagues = dataController.viewContext.fetchLeagues()
-    }
 }
 
 extension LeaguesInterfaceController: WatchSessionManagerWatchOSDelegate {
     func messageReceived(tuple: MessageReceived) {
-        guard let jsonString = tuple.message["configuration"] as? String,
-            let configuration = Configuration.decoded(jsonString: jsonString) else { return }
-        configuration.saveCookies(cookieManager: cookieManager)
-        
-        dataController.viewContext.deleteLeagues()
-                
-        for id in configuration.leagueIds {
-            network.saveLeague(leagueId: id)
+        switch tuple.message["request"] as! RequestType.RawValue {
+        case RequestType.setupConfiguration.rawValue:
+            print("Watch received configuration")
+            guard let jsonString = tuple.message["configuration"] as? String,
+                let configuration = Configuration.decoded(jsonString: jsonString) else { return }
+            configuration.saveCookies(cookieManager: cookieManager)
+            
+            dataController.viewContext.deleteLeagues()
+                    
+            for id in configuration.leagueIds {
+                network.saveLeague(leagueId: id)
+            }
+        default:
+            break
+        }
+    }
+    
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+        if activationState == .activated {
+            if let leagues = leagues, leagues.isEmpty {
+                requestConfiguration()
+            }
         }
     }
 }
