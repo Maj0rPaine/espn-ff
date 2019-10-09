@@ -100,6 +100,8 @@ extension WebViewController: WKNavigationDelegate {
                 
         if let leagueId = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems?.first(where: { $0.name.contains("leagueId")})?.value {
             confirmSaveLeague(leagueId)
+            decisionHandler(.cancel)
+            return
         }
         
         //print(url)
