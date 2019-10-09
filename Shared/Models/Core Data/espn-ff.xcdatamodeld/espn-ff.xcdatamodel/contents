@@ -3,17 +3,21 @@
     <entity name="LeagueEntity" representedClassName="LeagueEntity" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="primaryTeamId" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="scoringPeriodId" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="teams" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TeamEntity" inverseName="league" inverseEntity="TeamEntity"/>
     </entity>
     <entity name="TeamEntity" representedClassName="TeamEntity" syncable="YES" codeGenerationType="class">
         <attribute name="abbreviation" optional="YES" attributeType="String"/>
-        <attribute name="fullName" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="location" optional="YES" attributeType="String"/>
+        <attribute name="logo" optional="YES" attributeType="String"/>
+        <attribute name="nickname" optional="YES" attributeType="String"/>
+        <attribute name="ownerId" optional="YES" attributeType="String"/>
         <relationship name="league" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="LeagueEntity" inverseName="teams" inverseEntity="LeagueEntity"/>
     </entity>
     <elements>
-        <element name="LeagueEntity" positionX="-63" positionY="-18" width="265.7421875" height="103"/>
-        <element name="TeamEntity" positionX="5.71875" positionY="274.3125" width="128" height="28"/>
+        <element name="LeagueEntity" positionX="-63" positionY="-18" width="265.7421875" height="118"/>
+        <element name="TeamEntity" positionX="5.71875" positionY="274.3125" width="128" height="148"/>
     </elements>
 </model>

@@ -14,12 +14,14 @@ struct League: Codable {
     var scoringPeriodId: Int?
     var teams: [Team]?
     var name: String?
+    var primaryTeamId: Int?
     
     private enum CodingKeys: String, CodingKey {
         case id
         case scoringPeriodId
         case teams
         case settings
+        case primaryTeamId
     }
     
     private enum SettingsCodingKeys: String, CodingKey {
@@ -54,14 +56,5 @@ struct League: Codable {
         try container.encode(teams, forKey: .teams)
         var settings = container.nestedContainer(keyedBy: SettingsCodingKeys.self, forKey: .settings)
         try settings.encode(name, forKey: .name)
-    }
-}
-
-extension League {
-    init(entity: LeagueEntity) {
-        self.leagueId = Int(entity.id)
-        self.scoringPeriodId = Int(entity.scoringPeriodId)
-        self.teams = entity.teams?.allObjects as? [Team]
-        self.name = entity.name
     }
 }

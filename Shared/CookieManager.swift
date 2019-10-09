@@ -39,13 +39,17 @@ struct Cookie: Codable {
 }
 
 class CookieManager {
+    static let shared = CookieManager()
+    
     var containsAuthCookie: ((Bool) -> Void)?
-        
-    let cookieStorage = HTTPCookieStorage.shared
     
     let ESPN_COOKIE_NAME = "espn_s2"
     
     let SWID_COOKIE_NAME = "SWID"
+    
+    var cookieStorage: HTTPCookieStorage {
+        return HTTPCookieStorage.shared
+    }
     
     var espn: String? {
         guard let cookie = cookieStorage.cookies?.first(where: { $0.name.contains(ESPN_COOKIE_NAME) }) else { return nil }
@@ -55,11 +59,6 @@ class CookieManager {
     var swid: String? {
         guard let cookie = cookieStorage.cookies?.first(where: { $0.name.contains(SWID_COOKIE_NAME) }) else { return nil }
         return cookie.value
-    }
-    
-    init(_ containsAuthCookie: ((Bool) -> Void)? = nil) {
-        self.containsAuthCookie = containsAuthCookie
-        checkCookies()
     }
     
     func saveCookie(_ cookie: HTTPCookie) {

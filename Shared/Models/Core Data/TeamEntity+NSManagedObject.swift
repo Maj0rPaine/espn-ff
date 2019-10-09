@@ -14,6 +14,9 @@ extension TeamEntity {
         self.init(context: context)
         self.id = Int16(team.id ?? 0)
         self.abbreviation = team.abbrev
-        self.fullName = team.description
+        self.location = team.location
+        self.nickname = team.nickname
+        self.logo = team.logo
+        self.ownerId = team.owners?.first
     }
 }

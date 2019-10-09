@@ -1,5 +1,5 @@
 //
-//  InterfaceController.swift
+//  LeaguesInterfaceController.swift
 //  watch Extension
 //
 //  Created by Chris Paine on 10/3/19.
@@ -11,21 +11,27 @@ import Foundation
 import WatchConnectivity
 import CoreData
 
-class InterfaceController: WKInterfaceController {
+class LeaguesInterfaceController: WKInterfaceController {
     @IBOutlet weak var statusLabel: WKInterfaceLabel!
     @IBOutlet weak var table: WKInterfaceTable!
     
     var connectivityHandler = WatchSessionManager.shared
+    
+    var cookieManager = CookieManager.shared
+    
+    var network = Networking.shared
+    
+    var dataController = DataController.shared
 
     var session : WCSession?
-    
-    var cookieManager: CookieManager!
-    
-    var needsCookies = true
-    
+            
     var leagues: [LeagueEntity]? {
         didSet {
-            guard let leagues = leagues, !leagues.isEmpty else { return }
+            guard let leagues = leagues, !leagues.isEmpty else {
+                statusLabel.setText("Open iPhone app to set up leagues.")
+                renderRows(data: [])
+                return
+            }
             statusLabel.setText("Select League")
             renderRows(data: leagues)
         }
@@ -34,29 +40,28 @@ class InterfaceController: WKInterfaceController {
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         
-        // Configure interface objects here.
+        NotificationCenter.default.addObserver(self, selector: #selector(fetchLeagues), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
     }
     
     override func willActivate() {
-        // This method is called when watch view controller is about to be visible to user
         super.willActivate()
         
         connectivityHandler.startSession()
         connectivityHandler.watchOSDelegate = self
         
-        cookieManager = CookieManager { containsAuthCookie in
-            print("Contains auth cookie: \(containsAuthCookie)")
-    
-            if containsAuthCookie {
-                self.needsCookies = false
-                self.leagues = DataController.shared.viewContext.fetchLeagues()
-            }
-        }
+        fetchLeagues()
     }
     
     override func didDeactivate() {
-        // This method is called when watch view controller is no longer visible
+        NotificationCenter.default.removeObserver(self)
+        
         super.didDeactivate()
+    }
+    
+    override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
+        guard let leagues = leagues else { return }
+        let selectedLeague = leagues[rowIndex]
+        pushController(withName: "MatchupController", context: selectedLeague)
     }
     
     func renderRows(data: [LeagueEntity]) {
@@ -67,18 +72,22 @@ class InterfaceController: WKInterfaceController {
             controller.leagueLabel.setText(data[index].name)
         }
     }
+    
+    @objc func fetchLeagues() {
+        self.leagues = dataController.viewContext.fetchLeagues()
+    }
 }
 
-extension InterfaceController: WatchSessionManagerWatchOSDelegate {
+extension LeaguesInterfaceController: WatchSessionManagerWatchOSDelegate {
     func messageReceived(tuple: MessageReceived) {
         guard let jsonString = tuple.message["configuration"] as? String,
-            let data = jsonString.data(using: .utf8),
-            let configuration = try? JSONDecoder().decode(Configuration.self, from: data) else { return }
-        print(configuration)
+            let configuration = Configuration.decoded(jsonString: jsonString) else { return }
         configuration.saveCookies(cookieManager: cookieManager)
         
-        DataController.shared.viewContext.deleteLeagues()
-        
-        self.leagues = DataController.shared.viewContext.createLeagues(leagues: configuration.leagues)
+        dataController.viewContext.deleteLeagues()
+                
+        for id in configuration.leagueIds {
+            network.saveLeague(leagueId: id)
+        }
     }
 }

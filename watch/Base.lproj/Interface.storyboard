@@ -6,10 +6,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="14643"/>
     </dependencies>
     <scenes>
-        <!--Interface Controller-->
+        <!--Leagues Interface Controller-->
         <scene sceneID="aou-V4-d1y">
             <objects>
-                <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="watch" customModuleProvider="target">
+                <controller id="AgC-eL-Hgc" customClass="LeaguesInterfaceController" customModule="watch" customModuleProvider="target">
                     <items>
                         <label alignment="center" text="Open iPhone app to set up leagues." textAlignment="left" numberOfLines="0" id="8zu-xe-93o"/>
                         <table alignment="left" id="NA4-Hz-0oC">
@@ -66,5 +66,49 @@
             </objects>
             <point key="canvasLocation" x="468" y="1002"/>
         </scene>
+        <!--MatchupController-->
+        <scene sceneID="Fkr-OM-9LR">
+            <objects>
+                <controller identifier="MatchupController" id="I0J-bZ-K0g" customClass="MatchupInterfaceController" customModule="watch_Extension">
+                    <items>
+                        <label alignment="center" text="Getting Scores..." id="TnY-jX-hzE"/>
+                        <table alignment="left" id="IsV-1q-1bV">
+                            <items>
+                                <tableRow identifier="MatchupRow" id="mBs-DT-MdK" customClass="MatchupRowController" customModule="watch_Extension">
+                                    <group key="rootItem" width="1" alignment="left" spacing="5" id="QXW-tR-7kE">
+                                        <items>
+                                            <group width="30" height="30" alignment="left" verticalAlignment="center" radius="15" id="A2N-4L-RND">
+                                                <items>
+                                                    <imageView width="1" height="1" alignment="left" verticalAlignment="center" image="person.circle" catalog="system" contentMode="scaleAspectFill" initiallyAnimated="NO" animationDuration="10" id="S9u-a4-lpv"/>
+                                                </items>
+                                            </group>
+                                            <label alignment="left" verticalAlignment="center" text="Abbv" numberOfLines="0" id="RBv-p3-Bzn">
+                                                <fontDescription key="font" style="UICTFontTextStyleFootnote"/>
+                                            </label>
+                                            <label alignment="right" verticalAlignment="center" text="0.0" id="VzF-HK-3Fl">
+                                                <fontDescription key="font" style="UICTFontTextStyleCaption1"/>
+                                            </label>
+                                        </items>
+                                    </group>
+                                    <connections>
+                                        <outlet property="teamAbbreviationLabel" destination="RBv-p3-Bzn" id="bvG-fR-7k0"/>
+                                        <outlet property="teamImage" destination="S9u-a4-lpv" id="c3r-z0-e5R"/>
+                                        <outlet property="teamScoreLabel" destination="VzF-HK-3Fl" id="7d5-2Q-b8h"/>
+                                    </connections>
+                                </tableRow>
+                            </items>
+                        </table>
+                    </items>
+                    <connections>
+                        <outlet property="matchupStatusLabel" destination="TnY-jX-hzE" id="ZII-PM-FbC"/>
+                        <outlet property="table" destination="IsV-1q-1bV" id="Miu-we-V8a"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="468" y="345"/>
+        </scene>
     </scenes>
+    <resources>
+        <image name="person.circle" catalog="system" width="64" height="62"/>
+    </resources>
 </document>

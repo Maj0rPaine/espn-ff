@@ -10,10 +10,23 @@ import Foundation
 
 struct Configuration: Codable {
     var cookies: [Cookie]
-    var leagues: [League]
+    var leagueIds: [String]
 }
 
 extension Configuration {
+    func encoded() -> String? {
+        guard let json = try? JSONEncoder().encode(self),
+            let jsonString = String(data: json, encoding: String.Encoding.utf8) else { return nil }
+        return jsonString
+    }
+    
+    static func decoded(jsonString: String) -> Configuration? {
+        guard let data = jsonString.data(using: .utf8),
+            let configuration = try? JSONDecoder().decode(Configuration.self, from: data) else { return nil }
+        print(configuration)
+        return configuration
+    }
+    
     func saveCookies(cookieManager: CookieManager) {
         for cookie in self.cookies {
             if let httpCookie = cookie.createHTTPCookie() {
