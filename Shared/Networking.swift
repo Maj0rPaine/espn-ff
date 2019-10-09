@@ -91,7 +91,7 @@ class Networking {
 }
 
 extension Networking {
-    func getLeague(leagueId: String, completion: @escaping (League?, Error?) -> Void) {
+    func getLeague(leagueId: Int32, completion: @escaping (League?, Error?) -> Void) {
         guard var urlComponents = URLComponents(string: "\(baseURL)\(leagueId)") else { return }
         urlComponents.queryItems = [
             URLQueryItem(name: "view", value: "mTeam"),
@@ -110,7 +110,7 @@ extension Networking {
         }
     }
     
-    func saveLeague(leagueId: String, completion: ((LeagueEntity?, Error?) -> Void)? = nil) {
+    func saveLeague(leagueId: Int32, completion: ((LeagueEntity?, Error?) -> Void)? = nil) {
         Networking.shared.getLeague(leagueId: leagueId) { (league, error) in
             guard var league = league else {
                 completion?(nil, error)
@@ -153,12 +153,11 @@ extension Networking {
 //        }
 //    }
     
-    // FIXME: Replace scoringPeriodId
     func getMatchup(league: LeagueEntity, completion: @escaping (Schedule?, Error?) -> Void) {
         guard var urlComponents = URLComponents(string: "\(baseURL)\(league.id)") else { return }
         urlComponents.queryItems = [
             URLQueryItem(name: "view", value: "mMatchupScore"),
-            URLQueryItem(name: "scoringPeriodId", value: "\(5)")
+            URLQueryItem(name: "scoringPeriodId", value: "\(league.scoringPeriodId)")
         ]
                 
         request(urlComponents.url, decode: { (json) -> Matchup? in
@@ -168,7 +167,7 @@ extension Networking {
             switch result {
             case .success(let matchup):
                 guard let schedules = matchup.schedule,
-                    let schedule = schedules.first(where: { $0.matchupPeriodId == 5 && ($0.away?.teamId == Int(league.primaryTeamId) || $0.home?.teamId == Int(league.primaryTeamId))}) else {
+                    let schedule = schedules.first(where: { $0.matchupPeriodId == Int(league.scoringPeriodId) && ($0.away?.teamId == Int(league.primaryTeamId) || $0.home?.teamId == Int(league.primaryTeamId))}) else {
                     completion(nil, NetworkError.scheduleNotAvailable)
                     return
                 }

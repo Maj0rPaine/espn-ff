@@ -13,7 +13,7 @@
                     <items>
                         <group width="1" alignment="left" layout="vertical" spacing="5" id="gwf-jn-r5U">
                             <items>
-                                <label alignment="center" text="Loading Leagues..." textAlignment="left" id="8zu-xe-93o">
+                                <label alignment="center" text="Loading Leagues..." textAlignment="left" numberOfLines="0" id="8zu-xe-93o">
                                     <fontDescription key="font" style="UICTFontTextStyleSubhead"/>
                                 </label>
                                 <table alignment="left" id="NA4-Hz-0oC">
@@ -79,7 +79,7 @@
                     <items>
                         <group width="1" alignment="left" layout="vertical" spacing="5" id="fOI-QJ-mQj">
                             <items>
-                                <label alignment="center" text="Getting Scores..." id="TnY-jX-hzE">
+                                <label alignment="center" text="Getting Scores..." numberOfLines="0" id="TnY-jX-hzE">
                                     <fontDescription key="font" style="UICTFontTextStyleSubhead"/>
                                 </label>
                                 <table alignment="left" id="IsV-1q-1bV">

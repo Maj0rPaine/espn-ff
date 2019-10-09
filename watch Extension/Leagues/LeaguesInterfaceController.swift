@@ -11,6 +11,7 @@ import Foundation
 import WatchConnectivity
 import CoreData
 
+// TODO: Set favorite league on select
 class LeaguesInterfaceController: WKInterfaceController {
     @IBOutlet weak var statusLabel: WKInterfaceLabel!
     @IBOutlet weak var table: WKInterfaceTable!
@@ -40,7 +41,7 @@ class LeaguesInterfaceController: WKInterfaceController {
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(fetchLeagues), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(observeLeagues(_:)), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
     }
     
     override func willActivate() {
@@ -64,8 +65,20 @@ class LeaguesInterfaceController: WKInterfaceController {
         pushController(withName: "MatchupController", context: selectedLeague)
     }
     
-    @objc func fetchLeagues() {
-        self.leagues = dataController.viewContext.fetchLeagues()
+    @objc func observeLeagues(_ notification: Notification) {
+        guard let keys = notification.userInfo?.keys else { return }
+        
+        if keys.contains(NSInsertedObjectsKey) {
+            fetchLeagues()
+        }
+        
+        if keys.contains(NSDeletedObjectsKey) {
+            leagues = nil
+        }
+    }
+    
+    func fetchLeagues() {
+        leagues = dataController.viewContext.fetchLeagues()
     }
     
     func requestConfiguration() {

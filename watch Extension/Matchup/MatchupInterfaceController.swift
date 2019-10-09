@@ -9,6 +9,7 @@
 import WatchKit
 import Foundation
 
+// TODO: Force press to select another week?
 class MatchupInterfaceController: WKInterfaceController {
     @IBOutlet weak var matchupStatusLabel: WKInterfaceLabel!
     @IBOutlet weak var table: WKInterfaceTable!
@@ -61,4 +62,6 @@ class MatchupInterfaceController: WKInterfaceController {
             controller.configure(with: data[index])
         }
     }
+    
+    // TODO: Show scoring roster from schedule on didSelect
 }

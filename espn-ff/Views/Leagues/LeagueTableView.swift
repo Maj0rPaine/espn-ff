@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 
+// TODO: Loading, empty, and incomplete league setup states
 class LeagueTableView: UITableView, UITableViewDataSource {
     var fetchedResultsController: NSFetchedResultsController<LeagueEntity>!
         
@@ -19,10 +20,7 @@ class LeagueTableView: UITableView, UITableViewDataSource {
         let fetchRequest: NSFetchRequest<LeagueEntity> = LeagueEntity.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: false)]
         
-        fetchedResultsController = NSFetchedResultsController<LeagueEntity>(fetchRequest: fetchRequest,
-                                                                            managedObjectContext: DataController.shared.viewContext,
-                                                                            sectionNameKeyPath: nil,
-                                                                            cacheName: "League")
+        fetchedResultsController = NSFetchedResultsController<LeagueEntity>(fetchRequest: fetchRequest, managedObjectContext: DataController.shared.viewContext, sectionNameKeyPath: nil, cacheName: "League")
         fetchedResultsController.delegate = self
         
         do {

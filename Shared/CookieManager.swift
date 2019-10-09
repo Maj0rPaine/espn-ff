@@ -78,7 +78,6 @@ class CookieManager {
     
     func clearCookies() {
         cookieStorage.cookies?.forEach(cookieStorage.deleteCookie(_:))
-        checkCookies()
     }
     
     func savedCookies() -> [Cookie]? {

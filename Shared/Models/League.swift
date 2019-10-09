@@ -28,6 +28,14 @@ struct League: Codable {
         case name
     }
     
+    init(leagueId: Int?, scoringPeriodId: Int? = 0, teams: [Team]? = nil, name: String? = "New Legaue", primaryTeamId: Int? = -1) {
+        self.leagueId = leagueId
+        self.scoringPeriodId = scoringPeriodId
+        self.teams = teams
+        self.name = name
+        self.primaryTeamId = primaryTeamId
+    }
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         

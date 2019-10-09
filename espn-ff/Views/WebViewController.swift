@@ -9,10 +9,16 @@
 import UIKit
 import WebKit
 
+protocol WebViewControllerDelegate: class {
+    func didDismissController()
+}
+
 class WebViewController: UIViewController {
     var webView: WKWebView!
     
     var cookieManager: CookieManager!
+    
+    weak var delegate: WebViewControllerDelegate?
             
     lazy var activityIndicator: UIActivityIndicatorView = {
         let activityIndicatorView = UIActivityIndicatorView()
@@ -54,6 +60,8 @@ class WebViewController: UIViewController {
         super.viewWillDisappear(animated)
         
         webView.configuration.websiteDataStore.httpCookieStore.getAllCookies { (cookies) in
+            self.cookieManager.clearCookies()
+            
             for cookie in cookies {
                 self.cookieManager.saveCookie(cookie)
             }
@@ -70,20 +78,21 @@ class WebViewController: UIViewController {
     }
     
     func saveLeague(_ leagueId: String) {
-        Networking.shared.saveLeague(leagueId: leagueId) { [weak self] (league, error) in
-            guard error == nil else {
-                self?.present(UIAlertController.createErrorAlert(message: error?.localizedDescription), animated: true, completion: nil)
-                return
+        let newLeague = League(leagueId: Int(leagueId))
+        let result = DataController.shared.viewContext.saveLeague(newLeague)
+        
+        guard result.league != nil else {
+            if let error = result.error {
+               self.present(UIAlertController.createErrorAlert(message: error.localizedDescription), animated: true, completion: nil)
             }
-
-            DispatchQueue.main.async {
-                self?.present(UIAlertController.createAlert(title: "Success", message: "You saved a new league."), animated: true, completion: nil)
-            }
+            return
         }
+        
+        present(UIAlertController.createAlert(title: "Success", message: "You saved a new league."), animated: true, completion: nil)
     }
     
     @objc func dismissController() {
-        navigationController?.dismiss(animated: true, completion: nil)
+        delegate?.didDismissController()
     }
 }
 

@@ -16,6 +16,10 @@ class LeagueViewController: UIViewController {
     
     var cookieManager = CookieManager.shared
     
+    var network = Networking.shared
+    
+    var dataController = DataController.shared
+    
     var webViewController: WebViewController!
     
     var leagueTableView: LeagueTableView!
@@ -48,14 +52,17 @@ class LeagueViewController: UIViewController {
     }
     
     @IBAction func presentWebView(_ sender: Any) {
-        present(UINavigationController(rootViewController: WebViewController(cookieManager: cookieManager)), animated: true, completion: nil)
+        webViewController = WebViewController(cookieManager: cookieManager)
+        webViewController.delegate = self
+        present(UINavigationController(rootViewController: webViewController), animated: true, completion: nil)
     }
     
+    // TODO: Check league completeness before sending configuration to watch
     @objc func sendConfiguration() {
         guard connectivityHandler.validSession != nil,
             let cookies = cookieManager.savedCookies(),
             let entities = leagueTableView.fetchedResultsController.fetchedObjects,
-            let stringData = Configuration(cookies: cookies, leagueIds: entities.map { "\($0.id)" }).encoded() else { return }
+            let stringData = Configuration(cookies: cookies, leagueIds: entities.map { $0.id }).encoded() else { return }
         print("Phone sending configuration")
         let message = [
             "request" : RequestType.setupConfiguration.rawValue as AnyObject,
@@ -63,6 +70,21 @@ class LeagueViewController: UIViewController {
         ]
         connectivityHandler.sendMessage(message: message) { (error) in
             print("Error sending message: \(error)")
+        }
+    }
+    
+    func refreshLeagues() {
+        if let leagues = self.leagueTableView.fetchedResultsController.fetchedObjects {
+            for leagueEntity in leagues {
+                self.network.getLeague(leagueId: leagueEntity.id) { [weak self] (league, error) in
+                    guard let league = league else {
+                        self?.dataController.viewContext.delete(leagueEntity)
+                        return
+                    }
+                    
+                    leagueEntity.update(with: league, context: self?.dataController.viewContext ?? DataController.shared.viewContext)
+                }
+            }
         }
     }
 }
@@ -87,6 +109,13 @@ extension LeagueViewController: UITableViewDelegate {
 //            teamDetailsViewController.title = cell.textLabel?.text
 //            self?.navigationController?.pushViewController(teamDetailsViewController, animated: true)
 //        }
+    }
+}
+
+extension LeagueViewController: WebViewControllerDelegate {
+    func didDismissController() {
+        navigationController?.dismiss(animated: true, completion: nil)
+        refreshLeagues()
     }
 }
 

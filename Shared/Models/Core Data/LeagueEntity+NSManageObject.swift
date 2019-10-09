@@ -12,6 +12,10 @@ import CoreData
 extension LeagueEntity {
     convenience init(league: League, context: NSManagedObjectContext) {
         self.init(context: context)
+        update(with: league, context: context)
+    }
+    
+    func update(with league: League, context: NSManagedObjectContext) {
         self.id = Int32(league.leagueId ?? 0)
         self.scoringPeriodId = Int16(league.scoringPeriodId ?? 0)
         self.name = league.name

@@ -17,6 +17,7 @@ class MatchupRowController: NSObject {
     
     var league: LeagueEntity?
     
+    // TODO: Investigate team logos
     func configure(with team: MatchupTeam) {
         if let leagueId = league?.id,
             let teamId = team.teamId,

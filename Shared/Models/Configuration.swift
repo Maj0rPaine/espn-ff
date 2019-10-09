@@ -10,7 +10,7 @@ import Foundation
 
 struct Configuration: Codable {
     var cookies: [Cookie]
-    var leagueIds: [String]
+    var leagueIds: [Int32]
 }
 
 extension Configuration {
