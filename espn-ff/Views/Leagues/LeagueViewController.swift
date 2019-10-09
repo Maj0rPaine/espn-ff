@@ -11,9 +11,7 @@ import WatchConnectivity
 
 class LeagueViewController: UIViewController {
     @IBOutlet weak var signInButton: UIBarButtonItem!
-    
-    @IBOutlet weak var addLeagueButton: UIBarButtonItem!
-    
+        
     var connectivityHandler = WatchSessionManager.shared
     
     var cookieManager = CookieManager.shared
@@ -32,12 +30,9 @@ class LeagueViewController: UIViewController {
         super.viewDidLoad()
         
         navigationItem.title = "Leagues"
-        
-        addLeagueButton.isEnabled = false
                 
         cookieManager.containsAuthCookie = { containsAuthCookie in
             self.signInButton.title = containsAuthCookie ? "Logged In" : "Log In"
-            self.addLeagueButton.isEnabled = containsAuthCookie
         }
         
         cookieManager.checkCookies()
@@ -51,10 +46,6 @@ class LeagueViewController: UIViewController {
     
     @IBAction func presentWebView(_ sender: Any) {
         present(UINavigationController(rootViewController: WebViewController(cookieManager: cookieManager)), animated: true, completion: nil)
-    }
-    
-    @IBAction func pushNewLeagueController() {
-        navigationController?.pushViewController(NewLeagueController(style: .grouped), animated: true)
     }
     
     @objc func sendMessage() {

@@ -40,14 +40,8 @@
                                 <action selector="presentWebView:" destination="BYZ-38-t0r" id="ayV-o9-cpZ"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Add League" id="n8w-Xc-pOm">
-                            <connections>
-                                <action selector="pushNewLeagueController" destination="BYZ-38-t0r" id="aLI-c7-qn6"/>
-                            </connections>
-                        </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="addLeagueButton" destination="n8w-Xc-pOm" id="Onk-ed-dIJ"/>
                         <outlet property="signInButton" destination="E62-yh-831" id="4Yd-gM-zYK"/>
                     </connections>
                 </viewController>
