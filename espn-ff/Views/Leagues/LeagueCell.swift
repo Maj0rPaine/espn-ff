@@ -16,6 +16,7 @@ class LeagueCell: UITableViewCell {
         self.leagueId = "\(entity.id)"
         textLabel?.text = entity.name
         accessoryType = .disclosureIndicator
+        selectionStyle = .none
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

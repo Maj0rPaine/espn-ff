@@ -69,6 +69,8 @@ class LeagueViewController: UIViewController {
 
 extension LeagueViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        present(UIAlertController.createAlert(title: "Wanna see this week's matchup?", message: "Open the companion app on your watch to view your matchup for this week."), animated: true, completion: nil)
+        
 //        guard let cell = tableView.cellForRow(at: indexPath) as? LeagueCell,
 //            let leagueId = cell.leagueId,
 //            let teamId = cookieManager.swid else { return }
