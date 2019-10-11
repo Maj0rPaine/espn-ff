@@ -31,6 +31,6 @@ class MatchupRowController: NSObject {
             teamAbbreviationLabel.setText(team.abbreviation)
         }
         
-        teamScoreLabel.setText(String(format: "%.1f", team.totalPoints ?? 0.0))
+        teamScoreLabel.setText(String(format: "%.1f", team.score))
     }
 }

@@ -30,7 +30,9 @@ struct Player: Codable {
     var id: Int?
     var lastName: String?
     var injuryStatus: PlayerStatus?
-    
+}
+
+extension Player {
     var shortName: String? {
         guard let firstInitial = firstName?.prefix(1),
             let lastName = lastName,

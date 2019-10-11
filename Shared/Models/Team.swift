@@ -15,7 +15,9 @@ struct Team: Codable {
     var nickname: String?
     var logo: String?
     var owners: [String]?
-    
+}
+
+extension Team {
     var description: String {
         guard let location = location,
             let nickname = nickname else { return "" }

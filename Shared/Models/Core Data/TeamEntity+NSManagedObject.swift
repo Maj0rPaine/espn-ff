@@ -10,6 +10,12 @@ import Foundation
 import CoreData
 
 extension TeamEntity {
+    var fullName: String {
+        guard let location = location,
+            let nickname = nickname else { return "" }
+        return "\(location) \(nickname)"
+    }
+    
     convenience init(team: Team, context: NSManagedObjectContext) {
         self.init(context: context)
         self.id = Int16(team.id ?? 0)

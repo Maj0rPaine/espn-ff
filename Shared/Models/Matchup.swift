@@ -21,7 +21,22 @@ struct Schedule: Codable {
 struct MatchupTeam: Codable {
     var teamId: Int?
     var totalPoints: Double?
+    var totalPointsLive: Double?
     var rosterForCurrentScoringPeriod: RosterForCurrentScoringPeriod?
+}
+
+extension MatchupTeam {
+    var score: Double {
+        if let totalPointsLive = totalPointsLive {
+            return totalPointsLive
+        }
+        
+        if let totalPoints = totalPoints {
+            return totalPoints
+        }
+        
+        return 0.0
+    }
 }
 
 struct RosterForCurrentScoringPeriod: Codable {

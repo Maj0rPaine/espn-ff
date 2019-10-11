@@ -12,6 +12,7 @@ import WatchConnectivity
 import CoreData
 
 // TODO: Set favorite league on select
+// TODO: League paging
 class LeaguesInterfaceController: WKInterfaceController {
     @IBOutlet weak var statusLabel: WKInterfaceLabel!
     @IBOutlet weak var table: WKInterfaceTable!
