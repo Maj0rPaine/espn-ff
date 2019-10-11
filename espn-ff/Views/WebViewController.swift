@@ -18,12 +18,15 @@ class WebViewController: UIViewController {
     
     var cookieManager: CookieManager!
     
+    var defaults = UserDefaults.standard
+    
+    let hasSeenESPNTutorial = "hasSeenESPNTutorial"
+    
     weak var delegate: WebViewControllerDelegate?
             
     lazy var activityIndicator: UIActivityIndicatorView = {
         let activityIndicatorView = UIActivityIndicatorView()
         activityIndicatorView.startAnimating()
-        activityIndicatorView.hidesWhenStopped = true
         activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
         return activityIndicatorView
     }()
@@ -54,6 +57,16 @@ class WebViewController: UIViewController {
             return
         }
         webView.load(URLRequest(url: url))
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if !defaults.bool(forKey: hasSeenESPNTutorial) {
+            present(UIAlertController.createAlert(title: "Here's a tip!", message: "After logging in, you can save your league by selecting it.", okHandler: { (action) in
+                self.defaults.set(true, forKey: self.hasSeenESPNTutorial)
+            }), animated: true, completion: nil)
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {

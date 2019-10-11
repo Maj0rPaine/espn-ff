@@ -9,9 +9,18 @@
 import UIKit
 import CoreData
 
-// TODO: Loading, empty, and incomplete league setup states
 class LeagueTableView: UITableView, UITableViewDataSource {
     var fetchedResultsController: NSFetchedResultsController<LeagueEntity>!
+    
+    lazy var emptyView: UIStackView = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        label.numberOfLines = 0
+        label.text = "Add leagues here to view \n weekly matchups on your watch.\n\nOpen ESPN and log in before \n adding private leagues."
+        label.textAlignment = .center
+        let stackView = UIStackView(arrangedSubviews: [label])
+        return stackView
+    }()
         
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
@@ -39,11 +48,13 @@ class LeagueTableView: UITableView, UITableViewDataSource {
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
+        updateBackgroundView()
         return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fetchedResultsController.sections?.first?.numberOfObjects ?? 0
+        guard let sectionInfo = fetchedResultsController.sections?.first else { return 0 }
+        return sectionInfo.numberOfObjects
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -62,6 +73,14 @@ class LeagueTableView: UITableView, UITableViewDataSource {
         let entityToDelete = fetchedResultsController.object(at: indexPath)
         DataController.shared.viewContext.delete(entityToDelete)
         DataController.shared.viewContext.saveChanges()
+    }
+    
+    func updateBackgroundView() {
+        if let objects = fetchedResultsController.fetchedObjects, !objects.isEmpty {
+            backgroundView = nil
+        } else {
+            backgroundView = emptyView
+        }
     }
 }
 

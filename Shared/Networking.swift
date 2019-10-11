@@ -26,7 +26,7 @@ class Networking {
     func request<T: Decodable>(_ url: URL?, decode: @escaping (Decodable) -> T?, completion: @escaping (NetworkResult<T, NetworkError>) -> Void) {
         guard let url = url else { return }
         
-        dataTask?.cancel()
+        //dataTask?.cancel() // TODO: Queue tasks instead of cancelling next one
         
         dataTask = decodingTask(with: url, decodingType: T.self) { (json , error) in
             defer {
@@ -202,7 +202,7 @@ enum NetworkError: Error, LocalizedError {
         case .noInternet: return "No Internet Connection"
         case .requestFailed: return "Request Failed"
         case .invalidData: return "Invalid Data"
-        case .authenticationFailed: return "You need to log in."
+        case .authenticationFailed: return "You need to log in with ESPN."
         case .responseUnsuccessful: return "Response Unsuccessful"
         case .jsonParsingFailure: return "JSON Parsing Failure"
         case .jsonConversionFailure: return "JSON Conversion Failure"

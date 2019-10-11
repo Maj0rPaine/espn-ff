@@ -40,6 +40,7 @@
 		3F834760234AED630026330A /* LeagueEntity+NSManageObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F83475E234AED630026330A /* LeagueEntity+NSManageObject.swift */; };
 		3F834762234BAE930026330A /* TeamEntity+NSManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F834761234BAE930026330A /* TeamEntity+NSManagedObject.swift */; };
 		3F834763234BAE930026330A /* TeamEntity+NSManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F834761234BAE930026330A /* TeamEntity+NSManagedObject.swift */; };
+		3F8456392350CC9700424093 /* AddLeagueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8456382350CC9700424093 /* AddLeagueViewController.swift */; };
 		3FAC1E5F234D7140006D5358 /* SharedExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAC1E5E234D7140006D5358 /* SharedExtensions.swift */; };
 		3FAC1E60234D7140006D5358 /* SharedExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAC1E5E234D7140006D5358 /* SharedExtensions.swift */; };
 		3FBCB8B42343C0A6001F19B8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBCB8B32343C0A6001F19B8 /* AppDelegate.swift */; };
@@ -127,6 +128,7 @@
 		3F83475B234AD9DF0026330A /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		3F83475E234AED630026330A /* LeagueEntity+NSManageObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LeagueEntity+NSManageObject.swift"; sourceTree = "<group>"; };
 		3F834761234BAE930026330A /* TeamEntity+NSManagedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TeamEntity+NSManagedObject.swift"; sourceTree = "<group>"; };
+		3F8456382350CC9700424093 /* AddLeagueViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLeagueViewController.swift; sourceTree = "<group>"; };
 		3FAC1E5E234D7140006D5358 /* SharedExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedExtensions.swift; sourceTree = "<group>"; };
 		3FBCB8B02343C0A6001F19B8 /* espn-ff.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "espn-ff.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FBCB8B32343C0A6001F19B8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -298,6 +300,7 @@
 				3FBCB8B72343C0A6001F19B8 /* LeagueViewController.swift */,
 				3FBCB8C82344426C001F19B8 /* LeagueTableView.swift */,
 				3FBCB99523453CC9001F19B8 /* LeagueCell.swift */,
+				3F8456382350CC9700424093 /* AddLeagueViewController.swift */,
 			);
 			path = Leagues;
 			sourceTree = "<group>";
@@ -499,6 +502,7 @@
 				3FAC1E5F234D7140006D5358 /* SharedExtensions.swift in Sources */,
 				3FBCB8B62343C0A6001F19B8 /* SceneDelegate.swift in Sources */,
 				3FBCB8D32344437F001F19B8 /* WebViewController.swift in Sources */,
+				3F8456392350CC9700424093 /* AddLeagueViewController.swift in Sources */,
 				3F834762234BAE930026330A /* TeamEntity+NSManagedObject.swift in Sources */,
 				3F276D77234840DE0006F186 /* WatchSessionManager.swift in Sources */,
 				3F2FDA76234BE05700ED8075 /* Matchup.swift in Sources */,

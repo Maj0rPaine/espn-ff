@@ -10,8 +10,6 @@ import UIKit
 import WatchConnectivity
 
 class LeagueViewController: UIViewController {
-    @IBOutlet weak var signInButton: UIBarButtonItem!
-        
     var connectivityHandler = WatchSessionManager.shared
     
     var cookieManager = CookieManager.shared
@@ -24,6 +22,12 @@ class LeagueViewController: UIViewController {
     
     var leagueTableView: LeagueTableView!
     
+    lazy var activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.startAnimating()
+        return activityIndicator
+    }()
+    
     override func loadView() {
         leagueTableView = LeagueTableView(frame: .zero, style: .insetGrouped)
         leagueTableView.delegate = self
@@ -34,17 +38,16 @@ class LeagueViewController: UIViewController {
         super.viewDidLoad()
         
         navigationItem.title = "Leagues"
-        
+                
         connectivityHandler.iOSDelegate = self
         connectivityHandler.startSession()
                 
-        cookieManager.containsAuthCookie = { containsAuthCookie in
-            self.signInButton.title = containsAuthCookie ? "Logged In" : "Log In"
-        }
-        
-        cookieManager.checkCookies()
+        //cookieManager.containsAuthCookie = { containsAuthCookie in }
+        //cookieManager.checkCookies()
         
         NotificationCenter.default.addObserver(self, selector: #selector(sendConfiguration), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
+        
+        refreshLeagues()
     }
     
     deinit {
@@ -56,6 +59,11 @@ class LeagueViewController: UIViewController {
         webViewController.delegate = self
         present(UINavigationController(rootViewController: webViewController), animated: true, completion: nil)
     }
+    
+    @IBAction func pushAddLeagueController(_ sender: Any) {
+        navigationController?.pushViewController(AddLeagueController(style: .insetGrouped), animated: true)
+    }
+    
     
     // TODO: Check league completeness before sending configuration to watch
     @objc func sendConfiguration() {

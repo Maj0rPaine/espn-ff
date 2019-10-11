@@ -35,15 +35,17 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="25r-1P-wvf">
-                        <barButtonItem key="leftBarButtonItem" title="Sign In" id="E62-yh-831">
+                        <barButtonItem key="leftBarButtonItem" title="Open ESPN" id="E62-yh-831">
                             <connections>
                                 <action selector="presentWebView:" destination="BYZ-38-t0r" id="ayV-o9-cpZ"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Add League" id="jZ5-Si-Emh">
+                            <connections>
+                                <action selector="pushAddLeagueController:" destination="BYZ-38-t0r" id="EO3-iH-HCm"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
-                    <connections>
-                        <outlet property="signInButton" destination="E62-yh-831" id="4Yd-gM-zYK"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
