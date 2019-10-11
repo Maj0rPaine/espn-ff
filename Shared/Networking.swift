@@ -156,6 +156,8 @@ extension Networking {
     func getMatchup(league: LeagueEntity, completion: @escaping (Schedule?, Error?) -> Void) {
         guard var urlComponents = URLComponents(string: "\(baseURL)\(league.id)") else { return }
         urlComponents.queryItems = [
+            URLQueryItem(name: "view", value: "mRoster"),
+            URLQueryItem(name: "view", value: "mMatchup"),
             URLQueryItem(name: "view", value: "mMatchupScore"),
             URLQueryItem(name: "scoringPeriodId", value: "\(league.scoringPeriodId)")
         ]

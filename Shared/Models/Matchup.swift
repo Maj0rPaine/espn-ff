@@ -18,19 +18,30 @@ struct Schedule: Codable {
     var home: MatchupTeam?
 }
 
-//extension Schedule {
-//    var homeScoreRounded: String? {
-//        guard let homeTeamScore = homeTeamScore else { return nil }
-//        return String(format: "%.1f", homeTeamScore)
-//    }
-//
-//    var awayScoreRounded: String? {
-//        guard let awayTeamScore = awayTeamScore else { return nil }
-//        return String(format: "%.1f", awayTeamScore)
-//    }
-//}
-
 struct MatchupTeam: Codable {
     var teamId: Int?
     var totalPoints: Double?
+    var rosterForCurrentScoringPeriod: RosterForCurrentScoringPeriod?
+}
+
+struct RosterForCurrentScoringPeriod: Codable {
+    var entries: [Entry]?
+    
+    var sortedEntries: [Entry]? {
+        guard let entries = entries else { return nil }
+        return entries.sorted(by: { $0.lineupSlotId ?? 0 < $1.lineupSlotId ?? 0 })
+    }
+}
+
+struct Entry: Codable {
+    var playerPoolEntry: PlayerPoolEntry?
+    var status: String?
+    var lineupSlotId: Int?
+}
+
+struct PlayerPoolEntry: Codable {
+    var appliedStatTotal: Double?
+    var player: Player?
+    var rosterLocked: Bool?
+    var status: String?
 }

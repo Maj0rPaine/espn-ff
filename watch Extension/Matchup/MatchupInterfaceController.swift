@@ -63,5 +63,9 @@ class MatchupInterfaceController: WKInterfaceController {
         }
     }
     
-    // TODO: Show scoring roster from schedule on didSelect
+    override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
+        guard let teams = teams else { return }
+        let selectedTeam = teams[rowIndex]
+        pushController(withName: "RosterController", context: selectedTeam)
+    }
 }

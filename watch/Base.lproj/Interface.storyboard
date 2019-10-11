@@ -89,7 +89,7 @@
                                                 <items>
                                                     <group width="30" height="30" alignment="left" verticalAlignment="center" radius="15" id="A2N-4L-RND">
                                                         <items>
-                                                            <imageView width="1" height="1" alignment="left" verticalAlignment="center" image="person.circle" catalog="system" contentMode="scaleAspectFill" initiallyAnimated="NO" animationDuration="10" id="S9u-a4-lpv"/>
+                                                            <imageView width="1" height="1" alignment="left" verticalAlignment="center" image="team-icon" contentMode="scaleAspectFill" initiallyAnimated="NO" animationDuration="10" id="S9u-a4-lpv"/>
                                                         </items>
                                                     </group>
                                                     <label alignment="left" verticalAlignment="center" text="Abbv" numberOfLines="0" id="RBv-p3-Bzn">
@@ -119,8 +119,48 @@
             </objects>
             <point key="canvasLocation" x="468" y="345"/>
         </scene>
+        <!--Roster-->
+        <scene sceneID="Nin-Az-qnz">
+            <objects>
+                <controller identifier="RosterController" title="Roster" id="QgL-Ri-B5Y" customClass="RosterInterfaceController" customModule="watch_Extension">
+                    <items>
+                        <table alignment="left" id="gsI-a8-Fq9">
+                            <items>
+                                <tableRow identifier="RosterRow" selectable="NO" id="Run-r7-pCw" customClass="RosterRowController" customModule="watch_Extension">
+                                    <group key="rootItem" width="1" alignment="left" spacing="5" id="3Mm-8M-W5L">
+                                        <items>
+                                            <imageView width="20" height="20" alignment="left" verticalAlignment="center" image="player-icon" id="cCz-Zd-xcR"/>
+                                            <label alignment="left" verticalAlignment="center" text="P. Name" id="2c4-xP-Isz">
+                                                <fontDescription key="font" type="system" pointSize="12"/>
+                                            </label>
+                                            <label alignment="right" verticalAlignment="center" hidden="YES" text="A" id="1BT-ZA-8RA">
+                                                <fontDescription key="font" type="system" pointSize="12"/>
+                                            </label>
+                                            <label alignment="right" verticalAlignment="center" text="0.0" id="lG7-In-eqm">
+                                                <fontDescription key="font" type="system" pointSize="12"/>
+                                            </label>
+                                        </items>
+                                    </group>
+                                    <connections>
+                                        <outlet property="image" destination="cCz-Zd-xcR" id="FVb-fv-l80"/>
+                                        <outlet property="nameLabel" destination="2c4-xP-Isz" id="P1h-KQ-xoD"/>
+                                        <outlet property="scoreLabel" destination="lG7-In-eqm" id="daM-dT-6zC"/>
+                                        <outlet property="statusLabel" destination="1BT-ZA-8RA" id="GZR-2v-ugF"/>
+                                    </connections>
+                                </tableRow>
+                            </items>
+                        </table>
+                    </items>
+                    <connections>
+                        <outlet property="table" destination="gsI-a8-Fq9" id="HmK-uo-dfw"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="719" y="345"/>
+        </scene>
     </scenes>
     <resources>
-        <image name="person.circle" catalog="system" width="64" height="62"/>
+        <image name="player-icon" width="300" height="200"/>
+        <image name="team-icon" width="300" height="200"/>
     </resources>
 </document>
