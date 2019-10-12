@@ -55,10 +55,14 @@ class Networking {
     }
 
     func decodingTask<T: Decodable>(with url: URL, decodingType: T.Type, completionHandler completion: @escaping JSONTaskCompletionHandler) -> URLSessionDataTask {
-        #if DEBUG
-        print(url)
-        #endif
+        print("**************************************************")
+        print("Network Request: \(url)")
+        
         return session.dataTask(with: url) { data, response, error in
+            defer {
+                print("**************************************************")
+            }
+            
             if let error = error as NSError?, error.code == NSURLErrorNotConnectedToInternet {
                 completion(nil, .noInternet)
                 return
@@ -69,13 +73,16 @@ class Networking {
                 return
             }
             
+            print("\(response.statusCode) Response")
+            
             switch response.statusCode {
             case 200:
                 if let data = data {
                     do {
                         let genericModel = try JSONDecoder().decode(decodingType, from: data)
                         completion(genericModel, nil)
-                    } catch {
+                    } catch let error {
+                        print(error)
                         completion(nil, .jsonConversionFailure)
                     }
                 } else {
@@ -197,7 +204,7 @@ enum NetworkError: Error, LocalizedError {
     case teamNotAvailable /// FIXME: Move to models
     case scheduleNotAvailable
     
-    var errorDescription: String? {
+    var errorDescription: String {
         switch self {
         case .noInternet: return "No Internet Connection"
         case .requestFailed: return "Request Failed"

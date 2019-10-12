@@ -41,7 +41,9 @@ extension MatchupTeam {
 
 struct RosterForCurrentScoringPeriod: Codable {
     var entries: [Entry]?
-    
+}
+
+extension RosterForCurrentScoringPeriod {
     var sortedEntries: [Entry]? {
         guard let entries = entries else { return nil }
         return entries.sorted(by: { $0.lineupSlotId ?? 0 < $1.lineupSlotId ?? 0 })

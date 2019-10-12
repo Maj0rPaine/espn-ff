@@ -45,11 +45,15 @@ class MatchupInterfaceController: WKInterfaceController {
     func fetchMatchup() {
         guard let league = league else { return }
         network.getMatchup(league: league) { [weak self] (schedule, error) in
-            if let awayTeam = schedule?.away,
-                let homeTeam = schedule?.home {
-                self?.teams = [awayTeam, homeTeam]
-                self?.matchupStatusLabel.setText("Week \(schedule?.matchupPeriodId ?? 0)")
+            guard let schedule = schedule,
+                let awayTeam = schedule.away,
+                let homeTeam = schedule.home,
+                let matchupPeriodId = schedule.matchupPeriodId else {
+                    self?.matchupStatusLabel.setText("Schedule Not Available")
+                    return
             }
+            self?.teams = [awayTeam, homeTeam]
+            self?.matchupStatusLabel.setText("Week \(matchupPeriodId)")
         }
     }
     

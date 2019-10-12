@@ -13,6 +13,7 @@ enum PlayerStatus: String, Codable {
     case questionable = "QUESTIONABLE"
     case doubtful = "DOUBTFUL"
     case out = "OUT"
+    case injuryReserve = "INJURY_RESERVE"
     
     var code: String {
         switch self {
@@ -20,6 +21,7 @@ enum PlayerStatus: String, Codable {
         case .questionable: return "Q"
         case .doubtful: return "D"
         case .out: return "Out"
+        case .injuryReserve: return "IR"
         }
     }
 }
