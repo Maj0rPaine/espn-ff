@@ -27,7 +27,7 @@ extension Configuration {
         return configuration
     }
     
-    func saveCookies(cookieManager: CookieManager) {
+    func saveCookies(cookieManager: HTTPCookieStorage) {
         for cookie in self.cookies {
             if let httpCookie = cookie.createHTTPCookie() {
                 cookieManager.saveCookie(httpCookie)

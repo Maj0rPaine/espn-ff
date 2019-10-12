@@ -59,10 +59,6 @@ class Networking {
         print("Network Request: \(url)")
         
         return session.dataTask(with: url) { data, response, error in
-            defer {
-                print("**************************************************")
-            }
-            
             if let error = error as NSError?, error.code == NSURLErrorNotConnectedToInternet {
                 completion(nil, .noInternet)
                 return
@@ -124,7 +120,7 @@ extension Networking {
                 return
             }
             
-            if let teamId = CookieManager.shared.swid,
+            if let teamId = HTTPCookieStorage.shared.swid,
                 let primaryTeam = league.teams?.first(where: { $0.owners?.first == teamId }) {
                 league.primaryTeamId = primaryTeam.id
             }

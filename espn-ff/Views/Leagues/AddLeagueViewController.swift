@@ -47,9 +47,7 @@ class AddLeagueController: UITableViewController {
                 return
             }
             
-            DispatchQueue.main.async {
-                self?.navigationController?.popViewController(animated: true)
-            }
+            self?.present(UIAlertController.createAlert(title: "Success", message: "You saved a new league."), animated: true, completion: nil)
         }
     }
 }

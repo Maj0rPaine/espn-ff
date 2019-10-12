@@ -19,7 +19,7 @@ class LeaguesInterfaceController: WKInterfaceController {
     
     var connectivityHandler = WatchSessionManager.shared
     
-    var cookieManager = CookieManager.shared
+    var cookieManager = HTTPCookieStorage.shared
     
     var network = Networking.shared
     
@@ -42,7 +42,7 @@ class LeaguesInterfaceController: WKInterfaceController {
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(observeLeagues(_:)), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(observeLeagueChanges(_:)), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
     }
     
     override func willActivate() {
@@ -66,7 +66,7 @@ class LeaguesInterfaceController: WKInterfaceController {
         pushController(withName: "MatchupController", context: selectedLeague)
     }
     
-    @objc func observeLeagues(_ notification: Notification) {
+    @objc func observeLeagueChanges(_ notification: Notification) {
         guard let keys = notification.userInfo?.keys else { return }
         
         if keys.contains(NSInsertedObjectsKey) {

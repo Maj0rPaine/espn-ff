@@ -9,32 +9,23 @@
 import UIKit
 import WebKit
 
-protocol WebViewControllerDelegate: class {
-    func didDismissController()
-}
-
 class WebViewController: UIViewController {
     var webView: WKWebView!
     
-    var cookieManager: CookieManager!
+    let network = Networking.shared
     
-    var defaults = UserDefaults.standard
+    let cookieStorage = HTTPCookieStorage.shared
+
+    let defaults = UserDefaults.standard
     
     let hasSeenESPNTutorial = "hasSeenESPNTutorial"
-    
-    weak var delegate: WebViewControllerDelegate?
-            
+                
     lazy var activityIndicator: UIActivityIndicatorView = {
         let activityIndicatorView = UIActivityIndicatorView()
         activityIndicatorView.startAnimating()
         activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
         return activityIndicatorView
     }()
-    
-    convenience init(cookieManager: CookieManager) {
-        self.init()
-        self.cookieManager = cookieManager
-    }
     
     override func loadView() {
         webView = WKWebView()
@@ -72,13 +63,7 @@ class WebViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        webView.configuration.websiteDataStore.httpCookieStore.getAllCookies { (cookies) in
-            self.cookieManager.clearCookies()
-            
-            for cookie in cookies {
-                self.cookieManager.saveCookie(cookie)
-            }
-        }
+        cookieStorage.syncCookies(with:  webView.configuration.websiteDataStore.httpCookieStore)
     }
     
     func confirmSaveLeague(_ leagueId: String) {
@@ -91,21 +76,24 @@ class WebViewController: UIViewController {
     }
     
     func saveLeague(_ leagueId: String) {
-        let newLeague = League(leagueId: Int(leagueId))
-        let result = DataController.shared.viewContext.saveLeague(newLeague)
-        
-        guard result.league != nil else {
-            if let error = result.error {
-               self.present(UIAlertController.createErrorAlert(message: error.localizedDescription), animated: true, completion: nil)
+        cookieStorage.syncCookies(with: webView.configuration.websiteDataStore.httpCookieStore) {
+            guard let id = Int32(leagueId) else { return }
+            
+            self.network.saveLeague(leagueId: id) { [weak self] (league, error) in
+                guard league != nil else {
+                    if let error = error {
+                       self?.present(UIAlertController.createErrorAlert(message: error.localizedDescription), animated: true, completion: nil)
+                    }
+                    return
+                }
+                
+                self?.present(UIAlertController.createAlert(title: "Success", message: "You saved a new league."), animated: true, completion: nil)
             }
-            return
         }
-        
-        present(UIAlertController.createAlert(title: "Success", message: "You saved a new league."), animated: true, completion: nil)
     }
     
     @objc func dismissController() {
-        delegate?.didDismissController()
+        navigationController?.dismiss(animated: true, completion: nil)
     }
 }
 
@@ -128,5 +116,20 @@ extension WebViewController: WKNavigationDelegate {
         
         //print(url)
         decisionHandler(.allow)
+    }
+}
+
+extension HTTPCookieStorage {
+    func syncCookies(with wkCookieStore: WKHTTPCookieStore, completion: (() -> Void)? = nil) {
+        if cookieValue(for: HTTPCookieStorage.SWID_COOKIE_NAME) != nil && cookieValue(for: HTTPCookieStorage.ESPN_COOKIE_NAME) != nil {
+            completion?()
+            return
+        }
+        
+        wkCookieStore.getAllCookies { (cookies) in
+            self.clearCookies()
+            cookies.forEach { self.saveCookie($0) }
+            completion?()
+        }
     }
 }

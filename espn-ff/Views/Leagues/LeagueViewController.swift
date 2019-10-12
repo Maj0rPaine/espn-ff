@@ -8,18 +8,17 @@
 
 import UIKit
 import WatchConnectivity
+import CoreData
 
 class LeagueViewController: UIViewController {
     var connectivityHandler = WatchSessionManager.shared
     
-    var cookieManager = CookieManager.shared
+    var cookieStorage = HTTPCookieStorage.shared
     
     var network = Networking.shared
     
     var dataController = DataController.shared
-    
-    var webViewController: WebViewController!
-    
+        
     var leagueTableView: LeagueTableView!
     
     lazy var activityIndicator: UIActivityIndicatorView = {
@@ -41,34 +40,30 @@ class LeagueViewController: UIViewController {
                 
         connectivityHandler.iOSDelegate = self
         connectivityHandler.startSession()
-                
-        //cookieManager.containsAuthCookie = { containsAuthCookie in }
-        //cookieManager.checkCookies()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(sendConfiguration), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
-        
-        refreshLeagues()
+        NotificationCenter.default.addObserver(self, selector: #selector(observeLeagueChanges(_:)), name: Notification.Name.NSManagedObjectContextDidSave, object: nil)
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
     
+    @objc func observeLeagueChanges(_ notification: Notification) {
+        sendConfiguration()
+    }
+    
     @IBAction func presentWebView(_ sender: Any) {
-        webViewController = WebViewController(cookieManager: cookieManager)
-        webViewController.delegate = self
-        present(UINavigationController(rootViewController: webViewController), animated: true, completion: nil)
+        present(UINavigationController(rootViewController: WebViewController()), animated: true, completion: nil)
     }
     
     @IBAction func pushAddLeagueController(_ sender: Any) {
         navigationController?.pushViewController(AddLeagueController(style: .insetGrouped), animated: true)
     }
     
-    
     // TODO: Check league completeness before sending configuration to watch
-    @objc func sendConfiguration() {
+    func sendConfiguration() {
         guard connectivityHandler.validSession != nil,
-            let cookies = cookieManager.savedCookies(),
+            let cookies = cookieStorage.savedCookies,
             let entities = leagueTableView.fetchedResultsController.fetchedObjects,
             let stringData = Configuration(cookies: cookies, leagueIds: entities.map { $0.id }).encoded() else { return }
         print("Phone sending configuration")
@@ -86,7 +81,7 @@ class LeagueViewController: UIViewController {
             for leagueEntity in leagues {
                 self.network.getLeague(leagueId: leagueEntity.id) { [weak self] (league, error) in
                     guard let league = league else {
-                        self?.dataController.viewContext.delete(leagueEntity)
+                        //self?.dataController.viewContext.delete(leagueEntity)
                         return
                     }
                     
@@ -117,13 +112,6 @@ extension LeagueViewController: UITableViewDelegate {
 //            teamDetailsViewController.title = cell.textLabel?.text
 //            self?.navigationController?.pushViewController(teamDetailsViewController, animated: true)
 //        }
-    }
-}
-
-extension LeagueViewController: WebViewControllerDelegate {
-    func didDismissController() {
-        navigationController?.dismiss(animated: true, completion: nil)
-        refreshLeagues()
     }
 }
 
