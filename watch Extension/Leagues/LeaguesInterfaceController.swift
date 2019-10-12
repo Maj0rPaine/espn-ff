@@ -19,7 +19,7 @@ class LeaguesInterfaceController: WKInterfaceController {
     
     var connectivityHandler = WatchSessionManager.shared
     
-    var cookieManager = HTTPCookieStorage.shared
+    var cookieStorage = HTTPCookieStorage.shared
     
     var network = Networking.shared
     
@@ -107,7 +107,7 @@ extension LeaguesInterfaceController: WatchSessionManagerWatchOSDelegate {
             print("Watch received configuration")
             guard let jsonString = tuple.message["configuration"] as? String,
                 let configuration = Configuration.decoded(jsonString: jsonString) else { return }
-            configuration.saveCookies(cookieManager: cookieManager)
+            configuration.saveCookies(cookieManager: cookieStorage)
             
             dataController.viewContext.deleteLeagues()
                     
