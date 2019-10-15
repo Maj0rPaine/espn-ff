@@ -23,13 +23,16 @@ class MatchupRowController: NSObject {
             let teamId = team.teamId,
             let team = dataController.viewContext.fetchTeam(for: leagueId, with: Int16(teamId)) {
             
-            UIImage.load(from: team.logo, completion: { image in
-                if image != nil {
-                    DispatchQueue.main.async {
-                        self.teamImage.setImage(image)
+            if let logo = team.logo,
+                let url = URL(string: logo) {
+                Networking(url: url).getImage { image in
+                    if image != nil {
+                        DispatchQueue.main.async {
+                            self.teamImage.setImage(image)
+                        }
                     }
                 }
-            })
+            }
             
             teamAbbreviationLabel.setText(team.abbreviation)
         }

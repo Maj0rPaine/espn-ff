@@ -12,7 +12,7 @@ import WebKit
 class WebViewController: UIViewController {
     var webView: WKWebView!
     
-    let network = Networking.shared
+    let network = Networking()
     
     let cookieStorage = HTTPCookieStorage.shared
 
@@ -80,14 +80,16 @@ class WebViewController: UIViewController {
             guard let id = Int32(leagueId) else { return }
             
             self.network.saveLeague(leagueId: id) { [weak self] (league, error) in
-                guard league != nil else {
-                    if let error = error {
-                       self?.present(UIAlertController.createErrorAlert(message: error.localizedDescription), animated: true, completion: nil)
+                DispatchQueue.main.async {
+                    guard league != nil else {
+                        if let error = error {
+                           self?.present(UIAlertController.createErrorAlert(message: error.localizedDescription), animated: true, completion: nil)
+                        }
+                        return
                     }
-                    return
+                    
+                    self?.present(UIAlertController.createAlert(title: "Success", message: "You saved a new league."), animated: true, completion: nil)
                 }
-                
-                self?.present(UIAlertController.createAlert(title: "Success", message: "You saved a new league."), animated: true, completion: nil)
             }
         }
     }

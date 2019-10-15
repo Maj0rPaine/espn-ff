@@ -14,9 +14,7 @@ class LeagueViewController: UIViewController {
     var connectivityHandler = WatchSessionManager.shared
     
     var cookieStorage = HTTPCookieStorage.shared
-    
-    var network = Networking.shared
-    
+        
     var dataController = DataController.shared
         
     var leagueTableView: LeagueTableView!
@@ -72,23 +70,6 @@ class LeagueViewController: UIViewController {
 extension LeagueViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         present(UIAlertController.createAlert(title: "Wanna see this week's matchup?", message: "Open the companion app on your watch to view your matchup for this week."), animated: true, completion: nil)
-        
-//        guard let cell = tableView.cellForRow(at: indexPath) as? LeagueCell,
-//            let leagueId = cell.leagueId,
-//            let teamId = cookieManager.swid else { return }
-//
-//        Networking.shared.getTeam(leagueId: leagueId, teamId: teamId) { [weak self] (team, error) in
-//            guard let team = team else {
-//                if error != nil {
-//                    self?.cookieManager.clearCookies()
-//                    self?.present(UIAlertController.createErrorAlert(message: error?.localizedDescription), animated: true, completion: nil)
-//                }
-//                return
-//            }
-//            let teamDetailsViewController = TeamDetailsViewController(team: team)
-//            teamDetailsViewController.title = cell.textLabel?.text
-//            self?.navigationController?.pushViewController(teamDetailsViewController, animated: true)
-//        }
     }
 }
 

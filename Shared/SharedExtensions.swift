@@ -14,32 +14,6 @@ extension UIImage {
     func cache(with key: String) {
         UIImage.imageCache.setObject(self, forKey: key as AnyObject)
     }
-    
-    static func load(from urlString: String?, completion: @escaping (UIImage?) -> Void) {
-        guard let urlString = urlString,
-            let url = URL(string: urlString) else {
-                completion(nil)
-                return
-        }
-        
-        if let cachedImage = UIImage.imageCache.object(forKey: urlString as AnyObject) as? UIImage {
-            completion(cachedImage)
-            return
-        }
-        
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
-                let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
-                let data = data,
-                let image = UIImage(data: data)
-                else {
-                    completion(nil)
-                    return
-            }
-            image.cache(with: urlString)
-            completion(image)
-        }.resume()
-    }
 }
 
 extension HTTPCookieStorage {

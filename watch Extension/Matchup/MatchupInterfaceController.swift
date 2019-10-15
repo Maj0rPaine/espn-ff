@@ -14,7 +14,7 @@ class MatchupInterfaceController: WKInterfaceController {
     @IBOutlet weak var matchupStatusLabel: WKInterfaceLabel!
     @IBOutlet weak var table: WKInterfaceTable!
     
-    var network = Networking.shared
+    var network = Networking()
     
     var league: LeagueEntity?
     

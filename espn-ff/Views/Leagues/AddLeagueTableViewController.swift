@@ -27,13 +27,15 @@ class AddLeagueTableViewController: UITableViewController {
                 return
         }
                 
-        Networking.shared.saveLeague(leagueId: intId) { [weak self] (league, error) in
-            guard error == nil else {
-                self?.present(UIAlertController.createErrorAlert(message: error?.localizedDescription), animated: true, completion: nil)
-                return
+        Networking().saveLeague(leagueId: intId) { [weak self] (league, error) in
+            DispatchQueue.main.async {
+                guard error == nil else {
+                    self?.present(UIAlertController.createErrorAlert(message: error?.localizedDescription), animated: true, completion: nil)
+                    return
+                }
+                
+                self?.present(UIAlertController.createAlert(title: "Success", message: "You saved a new league."), animated: true, completion: nil)
             }
-            
-            self?.present(UIAlertController.createAlert(title: "Success", message: "You saved a new league."), animated: true, completion: nil)
         }
     }
     

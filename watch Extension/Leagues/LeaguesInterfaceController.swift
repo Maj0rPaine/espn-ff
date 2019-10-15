@@ -21,7 +21,7 @@ class LeaguesInterfaceController: WKInterfaceController {
     
     var cookieStorage = HTTPCookieStorage.shared
     
-    var network = Networking.shared
+    var network = Networking()
     
     var dataController = DataController.shared
 
