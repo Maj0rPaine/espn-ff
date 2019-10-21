@@ -59,10 +59,12 @@ extension NetworkResponse {
 extension NetworkResponse where Body == Data? {
     func decode<BodyType: Decodable>(to type: BodyType.Type) throws -> NetworkResponse<BodyType> {
         guard let data = body else {
+            NSLog("Network Request: received error %@", NetworkError.invalidData.localizedDescription)
             throw NetworkError.invalidData
         }
         
         let decodedJSON = try JSONDecoder().decode(BodyType.self, from: data)
+        NSLog("Network Request: received response and parsed json")
         return NetworkResponse<BodyType>(statusCode: self.statusCode, body: decodedJSON)
     }
 }
@@ -79,11 +81,14 @@ struct Networking {
 
     private var session = URLSession.shared
     
+    private let notificationCenter = NotificationCenter.default
+    
     init(url: URL) {
         self.baseURL = url
     }
     
     init(configuration: URLSessionConfiguration = .default) {
+        configuration.timeoutIntervalForResource = 10.0
         session = URLSession(configuration: configuration)
     }
     
@@ -105,16 +110,17 @@ struct Networking {
         request.headers?.forEach { urlRequest.addValue($0.value, forHTTPHeaderField: $0.field) }
         
         print("**************************************************")
-        print("Network Request:")
-        print(urlRequest.debugDescription)
+        NSLog("Network Request: %@", urlRequest.debugDescription)
 
         let task = session.dataTask(with: urlRequest) { (data, response, error) in
              if let error = error as NSError?, error.code == NSURLErrorNotConnectedToInternet {
+                NSLog("Network Request: received error: %@", error.localizedDescription)
                 completion(.failure(.noInternet))
                 return
             }
             
             guard let httpResponse = response as? HTTPURLResponse else {
+                NSLog("Network Request: received error: %@", NetworkError.requestFailed.localizedDescription)
                 completion(.failure(.requestFailed)); return
             }
             completion(.success(NetworkResponse<Data?>(statusCode: httpResponse.statusCode, body: data)))
@@ -202,7 +208,7 @@ extension Networking {
                  URLQueryItem(name: "view", value: "mMatchupScore"),
                  URLQueryItem(name: "scoringPeriodId", value: "\(league.scoringPeriodId)")
         ])
-        
+                
         perform(request) { (result) in
             switch result {
             case .success(let response):
@@ -216,6 +222,7 @@ extension Networking {
                         completion(nil, NetworkError.scheduleNotAvailable)
                         return
                     }
+                    schedule.save(with: "\(league.id)")
                     completion(schedule, nil)
                 } else {
                     completion(nil, NetworkError.jsonParsingFailure)
@@ -250,6 +257,25 @@ extension Networking {
                 }
             case .failure:
                 completion(nil)
+            }
+        }
+    }
+    
+    func refreshMatchup(completion: (() -> Void)? = nil) {
+        guard let leagues = DataController.shared.viewContext.fetchLeagues() else {
+            NSLog("Core Data: failed to fetch leagues")
+            completion?()
+            return
+        }
+        
+        for (index, league) in leagues.enumerated() {
+            NSLog("Network Request: fetching matchup")
+
+            Networking().getMatchup(league: league) { (_, _) in
+                if index == leagues.count - 1 {
+                    NSLog("Network Request: finished fetching matchups")
+                    completion?()
+                }
             }
         }
     }

@@ -77,7 +77,7 @@
             <objects>
                 <controller identifier="MatchupController" id="I0J-bZ-K0g" customClass="MatchupInterfaceController" customModule="watch_Extension">
                     <items>
-                        <group width="1" alignment="left" layout="vertical" spacing="5" id="fOI-QJ-mQj">
+                        <group width="1" alignment="left" layout="vertical" spacing="10" id="fOI-QJ-mQj">
                             <items>
                                 <label alignment="center" text="Getting Scores..." numberOfLines="0" id="TnY-jX-hzE">
                                     <fontDescription key="font" style="UICTFontTextStyleSubhead"/>
@@ -108,10 +108,21 @@
                                         </tableRow>
                                     </items>
                                 </table>
+                                <group width="1" alignment="center" id="IXh-m4-PeD">
+                                    <items>
+                                        <label alignment="center" text="Last Update:" textAlignment="center" id="cuG-TF-aHD">
+                                            <fontDescription key="font" type="system" pointSize="10"/>
+                                        </label>
+                                        <label alignment="center" text="00:00" textAlignment="center" id="HNd-6V-g0B">
+                                            <fontDescription key="font" type="system" pointSize="10"/>
+                                        </label>
+                                    </items>
+                                </group>
                             </items>
                         </group>
                     </items>
                     <connections>
+                        <outlet property="lastUpdateLabel" destination="HNd-6V-g0B" id="xQz-MR-kFd"/>
                         <outlet property="matchupStatusLabel" destination="TnY-jX-hzE" id="ZII-PM-FbC"/>
                         <outlet property="table" destination="IsV-1q-1bV" id="Miu-we-V8a"/>
                     </connections>

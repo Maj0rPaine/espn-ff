@@ -12,10 +12,46 @@ struct Matchup: Codable {
     var schedule: [Schedule]?
 }
 
-struct Schedule: Codable {
+struct Schedule: Storable {    
     var matchupPeriodId: Int?
     var away: MatchupTeam?
     var home: MatchupTeam?
+    var lastUpdate: String?
+    
+    private enum CodingKeys: String, CodingKey {
+        case matchupPeriodId
+        case away
+        case home
+        case lastUpdate
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+       
+        if let matchupPeriodId = try? container.decode(Int.self, forKey: .matchupPeriodId) {
+            self.matchupPeriodId = matchupPeriodId
+        }
+        
+        if let away = try? container.decode(MatchupTeam.self, forKey: .away) {
+            self.away = away
+        }
+        
+        if let home = try? container.decode(MatchupTeam.self, forKey: .home) {
+            self.home = home
+        }
+        
+        if let lastUpdate = try? container.decode(String.self, forKey: .lastUpdate) {
+            self.lastUpdate = lastUpdate
+        }
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(matchupPeriodId, forKey: .matchupPeriodId)
+        try container.encode(away, forKey: .away)
+        try container.encode(home, forKey: .home)
+        try container.encode(Date().formattedLocalTime(), forKey: .lastUpdate)
+    }
 }
 
 struct MatchupTeam: Codable {

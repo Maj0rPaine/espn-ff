@@ -45,3 +45,12 @@ extension HTTPCookieStorage {
         cookies?.forEach(deleteCookie(_:))
     }
 }
+
+extension Date {
+    func formattedLocalTime() -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale.current
+        formatter.timeStyle = .medium
+        return formatter.string(from: self)
+    }
+}

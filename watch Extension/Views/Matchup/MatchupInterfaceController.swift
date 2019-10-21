@@ -13,6 +13,7 @@ import Foundation
 class MatchupInterfaceController: WKInterfaceController {
     @IBOutlet weak var matchupStatusLabel: WKInterfaceLabel!
     @IBOutlet weak var table: WKInterfaceTable!
+    @IBOutlet weak var lastUpdateLabel: WKInterfaceLabel!
     
     var network = Networking()
     
@@ -31,30 +32,33 @@ class MatchupInterfaceController: WKInterfaceController {
         if let league = context as? LeagueEntity {
             self.league = league
             setTitle(league.name)
-        }
-    }
-
-    override func willActivate() {
-        super.willActivate()
             
-        if league != nil {
-            fetchMatchup()
+            if let schedule = Schedule.load(for: "\(league.id)") {
+                setMatchup(with: schedule)
+            } else {
+                fetchMatchup()
+            }
         }
     }
 
     func fetchMatchup() {
         guard let league = league else { return }
         network.getMatchup(league: league) { [weak self] (schedule, error) in
-            guard let schedule = schedule,
-                let awayTeam = schedule.away,
-                let homeTeam = schedule.home,
-                let matchupPeriodId = schedule.matchupPeriodId else {
-                    self?.matchupStatusLabel.setText("Schedule Not Available")
-                    return
-            }
-            self?.teams = [awayTeam, homeTeam]
-            self?.matchupStatusLabel.setText("Week \(matchupPeriodId)")
+            self?.setMatchup(with: schedule)
         }
+    }
+    
+    func setMatchup(with schedule: Schedule?) {
+        guard let schedule = schedule,
+            let awayTeam = schedule.away,
+            let homeTeam = schedule.home,
+            let matchupPeriodId = schedule.matchupPeriodId else {
+                matchupStatusLabel.setText("Schedule Not Available")
+                return
+        }
+        teams = [awayTeam, homeTeam]
+        matchupStatusLabel.setText("Week \(matchupPeriodId)")
+        lastUpdateLabel.setText(schedule.lastUpdate)
     }
     
     func renderRows(data: [MatchupTeam]) {
