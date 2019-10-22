@@ -10,6 +10,13 @@ import Foundation
 
 struct Matchup: Codable {
     var schedule: [Schedule]?
+    var scoringPeriodId: Int?
+}
+
+extension Matchup {
+    func currentMatchup(for teamId: Int) -> Schedule? {
+        return schedule?.first(where: { $0.matchupPeriodId == scoringPeriodId && ($0.away?.teamId == teamId || $0.home?.teamId == teamId) })
+    }
 }
 
 struct Schedule: Storable {    
@@ -50,7 +57,7 @@ struct Schedule: Storable {
         try container.encode(matchupPeriodId, forKey: .matchupPeriodId)
         try container.encode(away, forKey: .away)
         try container.encode(home, forKey: .home)
-        try container.encode(Date().formattedLocalTime(), forKey: .lastUpdate)
+        try container.encode(Date().localTimeFormatted, forKey: .lastUpdate)
     }
 }
 

@@ -12,6 +12,8 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
 
     func applicationDidFinishLaunching() {
         DataController.shared.load()
+        // TODO: reloadRootControllers
+        
         scheduleNextReload()
     }
     
@@ -21,7 +23,6 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
 
     func applicationDidBecomeActive() {
         NSLog("ExtensionDelegate: applicationDidBecomeActive()")
-        Networking().refreshMatchup()
     }
 
     func applicationWillResignActive() {
@@ -30,39 +31,6 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
 
     func applicationDidEnterBackground() {
         NSLog("ExtensionDelegate: applicationDidEnterBackground()")
-    }
-    
-    func nextReloadTime(after date: Date) -> Date {
-        let calendar = Calendar(identifier: .gregorian)
-        let targetMinutes = DateComponents(minute: 15)
-     
-        var nextReloadTime = calendar.nextDate(
-            after: date,
-            matching: targetMinutes,
-            matchingPolicy: .nextTime
-        )!
-     
-        // if it's in less than 5 minutes, then skip this one and try next hour
-        if nextReloadTime.timeIntervalSince(date) < 5 * 60 {
-            nextReloadTime.addTimeInterval(3600)
-        }
-     
-        return nextReloadTime
-    }
-    
-    func scheduleNextReload() {
-        let targetDate = nextReloadTime(after: Date())
-     
-        NSLog("ExtensionDelegate: scheduling next update at %@", "\(targetDate)")
-     
-        WKExtension.shared().scheduleBackgroundRefresh(
-            withPreferredDate: Date(timeIntervalSinceNow: 10.0),
-            userInfo: nil,
-            scheduledCompletion: { error in
-                NSLog("ExtensionDelegate: background task %@",
-                error == nil ? "scheduled successfully" : "NOT scheduled: \(error!)")
-            }
-        )
     }
 
     func handle(_ backgroundTasks: Set<WKRefreshBackgroundTask>) {
@@ -82,5 +50,22 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
             }
         }
     }
+}
 
+extension ExtensionDelegate {
+    func scheduleNextReload() {
+        // TODO: Check if leagues are saved before scheduling
+        
+        Networking(url: URL(string: "https://site.api.espn.com")!).getCurrentGameSchedule { schedule in
+            /// Only schedule background tasks for games in progress
+            if let schedule = schedule, schedule.containsGamesInProgress {
+                NSLog("ExtensionDelegate: scheduling next update")
+                
+                WKExtension.shared().scheduleBackgroundRefresh(withPreferredDate: Date(timeIntervalSinceNow: 300), userInfo: nil, scheduledCompletion: { error in
+                       NSLog("ExtensionDelegate: background task %@",
+                       error == nil ? "scheduled successfully" : "NOT scheduled: \(error!)")
+                })
+            }
+        }
+    }
 }

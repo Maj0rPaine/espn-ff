@@ -114,6 +114,8 @@ extension LeaguesInterfaceController: WatchSessionManagerWatchOSDelegate {
             for id in configuration.leagueIds {
                 network.saveLeague(leagueId: id)
             }
+            
+            // TODO: Schedule background tasks on initial setup
         default:
             break
         }

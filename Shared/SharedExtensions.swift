@@ -47,7 +47,13 @@ extension HTTPCookieStorage {
 }
 
 extension Date {
-    func formattedLocalTime() -> String {
+    static var currentFormatted: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "YYYYMMdd"
+        return formatter.string(from: Date())
+    }
+    
+    var localTimeFormatted: String {
         let formatter = DateFormatter()
         formatter.locale = Locale.current
         formatter.timeStyle = .medium

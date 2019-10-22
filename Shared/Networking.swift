@@ -206,7 +206,6 @@ extension Networking {
                  URLQueryItem(name: "view", value: "mRoster"),
                  URLQueryItem(name: "view", value: "mMatchup"),
                  URLQueryItem(name: "view", value: "mMatchupScore"),
-                 URLQueryItem(name: "scoringPeriodId", value: "\(league.scoringPeriodId)")
         ])
                 
         perform(request) { (result) in
@@ -217,8 +216,7 @@ extension Networking {
                 }
                 
                 if let response = try? response.decode(to: Matchup.self) {
-                    guard let schedules = response.body.schedule,
-                        let schedule = schedules.first(where: { $0.matchupPeriodId == Int(league.scoringPeriodId) && ($0.away?.teamId == Int(league.primaryTeamId) || $0.home?.teamId == Int(league.primaryTeamId))}) else {
+                    guard let schedule = response.body.currentMatchup(for: Int(league.primaryTeamId)) else {
                         completion(nil, NetworkError.scheduleNotAvailable)
                         return
                     }
@@ -271,11 +269,35 @@ extension Networking {
         for (index, league) in leagues.enumerated() {
             NSLog("Network Request: fetching matchup")
 
-            Networking().getMatchup(league: league) { (_, _) in
+            getMatchup(league: league) { (_, _) in
                 if index == leagues.count - 1 {
                     NSLog("Network Request: finished fetching matchups")
                     completion?()
                 }
+            }
+        }
+    }
+    
+    func getCurrentGameSchedule(completion: @escaping (GameSchedule?) -> Void) {
+        let currentDate = Date.currentFormatted
+                    
+        let request = NetworkRequest(
+            path: "apis/fantasy/v2/games/ffl/games",
+            queryItems: [
+                 URLQueryItem(name: "dates", value: "\(currentDate)-\(currentDate)"),
+                 URLQueryItem(name: "pbpOnly", value: "true")
+        ])
+        
+        perform(request) { (result) in
+            switch result {
+            case .success(let response):
+                if let response = try? response.decode(to: GameSchedule.self) {
+                    completion(response.body)
+                } else {
+                    completion(nil)
+                }
+            case .failure(_):
+                completion(nil)
             }
         }
     }

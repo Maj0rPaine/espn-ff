@@ -63,6 +63,8 @@
 		3FC73562234D31CD0021B1DB /* MatchupRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC73561234D31CD0021B1DB /* MatchupRowController.swift */; };
 		3FCC823B23522EDB006840BA /* Cookie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCC823A23522EDB006840BA /* Cookie.swift */; };
 		3FCC823C23522EDB006840BA /* Cookie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCC823A23522EDB006840BA /* Cookie.swift */; };
+		3FD9E927235F7C25005CFDED /* GameSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD9E926235F7C25005CFDED /* GameSchedule.swift */; };
+		3FD9E928235F7C25005CFDED /* GameSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD9E926235F7C25005CFDED /* GameSchedule.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -154,6 +156,7 @@
 		3FC7355F234CFCDA0021B1DB /* LeaguesInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeaguesInterfaceController.swift; sourceTree = "<group>"; };
 		3FC73561234D31CD0021B1DB /* MatchupRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchupRowController.swift; sourceTree = "<group>"; };
 		3FCC823A23522EDB006840BA /* Cookie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cookie.swift; sourceTree = "<group>"; };
+		3FD9E926235F7C25005CFDED /* GameSchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSchedule.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -302,6 +305,7 @@
 				3F83475B234AD9DF0026330A /* Configuration.swift */,
 				3F2FDA75234BE05700ED8075 /* Matchup.swift */,
 				3F3D0714234FD17900EE5794 /* Player.swift */,
+				3FD9E926235F7C25005CFDED /* GameSchedule.swift */,
 				3FCC823A23522EDB006840BA /* Cookie.swift */,
 				3F9802FE2357CA3C00F1C5F8 /* Storable.swift */,
 			);
@@ -475,6 +479,7 @@
 				3F2FDA79234BEA5100ED8075 /* MatchupInterfaceController.swift in Sources */,
 				3F13028323466AA300E27250 /* NotificationController.swift in Sources */,
 				3F276D7523483C140006F186 /* Networking.swift in Sources */,
+				3FD9E928235F7C25005CFDED /* GameSchedule.swift in Sources */,
 				3F834760234AED630026330A /* LeagueEntity+NSManageObject.swift in Sources */,
 				3FC73560234CFCDA0021B1DB /* LeaguesInterfaceController.swift in Sources */,
 				3FCC823C23522EDB006840BA /* Cookie.swift in Sources */,
@@ -520,6 +525,7 @@
 				3FBCB8B62343C0A6001F19B8 /* SceneDelegate.swift in Sources */,
 				3FBCB8D32344437F001F19B8 /* WebViewController.swift in Sources */,
 				3F8456392350CC9700424093 /* AddLeagueTableViewController.swift in Sources */,
+				3FD9E927235F7C25005CFDED /* GameSchedule.swift in Sources */,
 				3F834762234BAE930026330A /* TeamEntity+NSManagedObject.swift in Sources */,
 				3F276D77234840DE0006F186 /* WatchSessionManager.swift in Sources */,
 				3F9802FF2357CA3C00F1C5F8 /* Storable.swift in Sources */,

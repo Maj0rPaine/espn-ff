@@ -39,6 +39,8 @@ class MatchupInterfaceController: WKInterfaceController {
                 fetchMatchup()
             }
         }
+        
+        // TODO: Observe refresh notification
     }
 
     func fetchMatchup() {
