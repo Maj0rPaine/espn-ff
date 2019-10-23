@@ -35,14 +35,10 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="25r-1P-wvf">
-                        <barButtonItem key="leftBarButtonItem" title="Open ESPN" id="E62-yh-831">
-                            <connections>
-                                <action selector="presentWebView:" destination="BYZ-38-t0r" id="ayV-o9-cpZ"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Add League" id="jZ5-Si-Emh">
                             <connections>
                                 <action selector="pushAddLeagueController:" destination="BYZ-38-t0r" id="EO3-iH-HCm"/>
+                                <segue destination="VLg-u3-SMb" kind="show" identifier="addLeague" id="HrH-WP-9xr"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -50,6 +46,90 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-741" y="45"/>
+        </scene>
+        <!--Add League-->
+        <scene sceneID="ts4-gF-00k">
+            <objects>
+                <tableViewController id="VLg-u3-SMb" customClass="AddLeagueTableViewController" customModule="espn_ff" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="WZ4-vc-EQ6">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="ZgP-za-59c">
+                            <rect key="frame" x="0.0" y="123.5" width="414" height="75"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hfa-E1-c2e">
+                                    <rect key="frame" x="148.5" y="22.5" width="117" height="30"/>
+                                    <state key="normal" title="Log In with ESPN"/>
+                                    <connections>
+                                        <action selector="presentWebView:" destination="VLg-u3-SMb" eventType="touchUpInside" id="2Sf-pz-7yU"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="Hfa-E1-c2e" firstAttribute="centerY" secondItem="ZgP-za-59c" secondAttribute="centerY" id="UUV-28-1Vh"/>
+                                <constraint firstItem="Hfa-E1-c2e" firstAttribute="centerX" secondItem="ZgP-za-59c" secondAttribute="centerX" id="qnS-Sp-FY0"/>
+                            </constraints>
+                        </view>
+                        <sections>
+                            <tableViewSection id="Jnw-QZ-xr6">
+                                <string key="footerTitle">You can find the league ID in the URL of your league's home page at espn.com/fantasy. Log in with ESPN before adding private leagues.</string>
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="AKH-Ry-g5z">
+                                        <rect key="frame" x="20" y="18" width="374" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="AKH-Ry-g5z" id="zYs-Sp-P5b">
+                                            <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter League ID" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="S9S-R0-VwM">
+                                                    <rect key="frame" x="8" y="5" width="358" height="34"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="VLg-u3-SMb" id="sZE-UF-ftW"/>
+                                                    </connections>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="S9S-R0-VwM" secondAttribute="trailing" constant="8" id="ARQ-DS-2vo"/>
+                                                <constraint firstItem="S9S-R0-VwM" firstAttribute="centerY" secondItem="zYs-Sp-P5b" secondAttribute="centerY" id="IMN-4m-6RL"/>
+                                                <constraint firstItem="S9S-R0-VwM" firstAttribute="leading" secondItem="zYs-Sp-P5b" secondAttribute="leading" constant="8" id="IzR-R2-X0J"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="VLg-u3-SMb" id="IhM-ii-W18"/>
+                            <outlet property="delegate" destination="VLg-u3-SMb" id="ORa-Ft-aDR"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Add League" id="tDp-tF-kEF"/>
+                    <connections>
+                        <outlet property="leagueIdTextField" destination="S9S-R0-VwM" id="oQM-f3-JeW"/>
+                        <outlet property="saveLeagueButton" destination="QVB-5I-EN3" id="36W-NR-fID"/>
+                        <outlet property="textFieldToolbar" destination="MMR-qU-0qY" id="VZv-Vm-Cff"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="L96-B4-O9H" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="MMR-qU-0qY">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <items>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="dyx-8a-Rv1"/>
+                        <barButtonItem title="Save League ID" id="QVB-5I-EN3">
+                            <connections>
+                                <action selector="saveNewLeague" destination="VLg-u3-SMb" id="8fv-AV-9ZE"/>
+                            </connections>
+                        </barButtonItem>
+                    </items>
+                </toolbar>
+            </objects>
+            <point key="canvasLocation" x="73.913043478260875" y="44.866071428571423"/>
         </scene>
     </scenes>
 </document>

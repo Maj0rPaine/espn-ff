@@ -86,6 +86,8 @@ class Networking {
                 }
             case 401:
                 completion(nil, .authenticationFailed)
+            case 404:
+                completion(nil, .notFound)
             default:
                 completion(nil, .responseUnsuccessful)
             }
@@ -108,7 +110,11 @@ extension Networking {
             case .success(let league):
                 completion(league, nil)
             case .failure(let error):
-                completion(nil, error)
+                if error == .notFound {
+                    completion(nil, NetworkError.leagueNotFound)
+                } else {
+                    completion(nil, error)
+                }
             }
         }
     }
@@ -195,20 +201,24 @@ enum NetworkError: Error, LocalizedError {
     case jsonConversionFailure
     case invalidData
     case authenticationFailed
+    case notFound
     case responseUnsuccessful
     case jsonParsingFailure
+    case leagueNotFound
     case teamNotAvailable /// FIXME: Move to models
     case scheduleNotAvailable
     
-    var errorDescription: String {
+    var errorDescription: String? {
         switch self {
         case .noInternet: return "No Internet Connection"
         case .requestFailed: return "Request Failed"
         case .invalidData: return "Invalid Data"
         case .authenticationFailed: return "You need to log in with ESPN."
+        case .notFound: return "Not found."
         case .responseUnsuccessful: return "Response Unsuccessful"
         case .jsonParsingFailure: return "JSON Parsing Failure"
         case .jsonConversionFailure: return "JSON Conversion Failure"
+        case .leagueNotFound: return "League not found. Check league ID."
         case .teamNotAvailable: return "Team not available. Check login."
         case .scheduleNotAvailable: return "Schedule not available."
         }

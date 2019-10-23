@@ -12,15 +12,7 @@ import CoreData
 class LeagueTableView: UITableView, UITableViewDataSource {
     var fetchedResultsController: NSFetchedResultsController<LeagueEntity>!
     
-    lazy var emptyView: UIStackView = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 18, weight: .light)
-        label.numberOfLines = 0
-        label.text = "Add leagues here to view \n weekly matchups on your watch.\n\nOpen ESPN and log in before \n adding private leagues."
-        label.textAlignment = .center
-        let stackView = UIStackView(arrangedSubviews: [label])
-        return stackView
-    }()
+    lazy var emptyView = EmptyView()
         
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)

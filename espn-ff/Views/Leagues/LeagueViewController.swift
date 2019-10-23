@@ -52,14 +52,6 @@ class LeagueViewController: UIViewController {
         sendConfiguration()
     }
     
-    @IBAction func presentWebView(_ sender: Any) {
-        present(UINavigationController(rootViewController: WebViewController()), animated: true, completion: nil)
-    }
-    
-    @IBAction func pushAddLeagueController(_ sender: Any) {
-        navigationController?.pushViewController(AddLeagueController(style: .insetGrouped), animated: true)
-    }
-    
     // TODO: Check league completeness before sending configuration to watch
     func sendConfiguration() {
         guard connectivityHandler.validSession != nil,
@@ -73,21 +65,6 @@ class LeagueViewController: UIViewController {
         ]
         connectivityHandler.sendMessage(message: message) { (error) in
             print("Error sending message: \(error)")
-        }
-    }
-    
-    func refreshLeagues() {
-        if let leagues = self.leagueTableView.fetchedResultsController.fetchedObjects {
-            for leagueEntity in leagues {
-                self.network.getLeague(leagueId: leagueEntity.id) { [weak self] (league, error) in
-                    guard let league = league else {
-                        //self?.dataController.viewContext.delete(leagueEntity)
-                        return
-                    }
-                    
-                    leagueEntity.update(with: league, context: self?.dataController.viewContext ?? DataController.shared.viewContext)
-                }
-            }
         }
     }
 }
